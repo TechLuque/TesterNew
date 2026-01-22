@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+:root {
+    --primary-green: #ffd204;
+    --dark-green: #ffd204;
+    --white: #ffffff;
+    --bg-overlay: rgba(0, 0, 0, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+}
+
+/* --- HERO SECTION --- */
+.hero-product {
+    width: 100%;
+    min-height: 100vh;
+    background: url('../../assets/images/CDD_Home_02.jpg') no-repeat center center/cover;
+    position: relative;
+    display: flex;
+}
+
+.hero-overlay {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 30%, rgba(0, 0, 0, 0.4));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+/* --- HEADER & LOGO --- */
+.product-header {
+    max-width: 900px;
+    width: 100%;
+    padding: 0 40px;
+}
+
+.product-logo-section {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.product-logo-container {
+    width: 25%;
+    min-width: 60px;
+}
+
+.product-logo {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.main-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: none;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.product-description {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 40px;
+    max-width: 650px;
+    line-height: 1.5;
+}
+
+/* --- BOTONES --- */
+.product-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.product-buttons .btn-primary,
+.product-buttons .btn-secondary,
+.product-buttons .btn-whatsapp {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 25px;
+    min-height: 45px;
+}
+
+.btn-whatsapp i {
+    font-family: 'Font Awesome 6 Brands' !important;
+}
+
+/* ============================================
+   RESPONSIVE - Tablets
+   ============================================ */
+@media (max-width: 1024px) {
+    .hero-overlay {
+        padding: 15px;
+    }
+
+    .product-header {
+        padding: 0 30px;
+    }
+
+    .main-title {
+        font-size: 3rem;
+    }
+
+    .product-description {
+        font-size: 1rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - Tablets Medianos
+   ============================================ */
+@media (max-width: 768px) {
+    .hero-overlay {
+        padding: 15px;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.95) 50%, rgba(0, 0, 0, 0.6));
+    }
+
+    .product-header {
+        padding: 0 20px;
+        text-align: center;
+    }
+
+    .product-logo-container {
+        width: 40%;
+        margin: 0 auto 15px;
+    }
+
+    .main-title {
+        font-size: 2.5rem;
+        padding: 0 10px;
+    }
+
+    .product-description {
+        font-size: 1rem;
+        padding: 0 10px;
+        margin-bottom: 30px;
+    }
+
+    .product-buttons {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .product-buttons .btn-primary,
+    .product-buttons .btn-secondary,
+    .product-buttons .btn-whatsapp {
+        min-width: 150px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - Mobile
+   ============================================ */
+@media (max-width: 480px) {
+    .hero-product {
+        min-height: 100vh;
+    }
+
+    .hero-overlay {
+        padding: 10px;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.98) 60%, rgba(0, 0, 0, 0.5));
+    }
+
+    .product-header {
+        padding: 0 15px;
+        text-align: center;
+    }
+
+    .product-logo-container {
+        width: 50%;
+        margin: 0 auto 15px;
+    }
+
+    .product-logo-section {
+        margin-bottom: 15px;
+    }
+
+    .main-title {
+        font-size: 1.8rem;
+        line-height: 1;
+        padding: 0 10px;
+        margin-bottom: 15px;
+    }
+
+    .product-description {
+        font-size: 0.9rem;
+        padding: 0 10px;
+        margin-bottom: 20px;
+        max-width: 100%;
+    }
+
+    .product-buttons {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .product-buttons .btn-primary,
+    .product-buttons .btn-secondary,
+    .product-buttons .btn-whatsapp {
+        width: 100%;
+        min-width: auto;
+        padding: 12px 15px;
+        font-size: 0.8rem;
+        min-height: 44px;
+    }
+}

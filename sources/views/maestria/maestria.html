@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestría del Dinero - Luque Academy</title>
+    <link rel="stylesheet" href="../../style/buttons.css">
+    <link rel="stylesheet" href="maestria.css">
+    <link rel="stylesheet" href="../../style/navbar.css">
+    <link rel="stylesheet" href="../../style/Style.css">
+    <link rel="stylesheet" href="../../style/whatsapp.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="product-page">
+    <script src="../../components/navbar.js"></script>
+    
+    <!-- CONTENEDOR ACCESO CONCEDIDO -->
+    <div id="access-granted" style="display:none;">
+        <section class="hero-product">
+            <div class="hero-overlay">
+                <header class="product-header">
+                    <div class="product-logo-section">
+                        <div class="product-logo-container">
+                            <img src="../../assets/images/LOGO_MST GRIS.svg" alt="Maestría del Dinero" class="product-logo">
+                        </div>
+                    </div>
+
+                    <div class="product-img-section">
+                        <p class="product-description">
+                            Domina las herramientas más avanzadas del mercado con nuestra metodología de alto rendimiento. 
+                            Diseñado para profesionales que buscan escalar sus resultados al siguiente nivel.
+                        </p>
+                    </div>
+
+                    <div class="product-buttons">
+                        <a href="#" id="btn-zoom-maestria" class="btn-primary btn-lg" target="_blank">ENTRAR A LA SALA</a>
+                        <button onclick="backToLobby()" class="btn-secondary">Volver al Lobby</button>
+                    </div>
+                </header>
+            </div>
+        </section>
+    </div>
+    
+    <!-- CONTENEDOR ACCESO DENEGADO -->
+    <div id="access-denied" style="display:none;">
+        <section class="hero-product">
+            <div class="hero-overlay">
+                <header class="product-header">
+                    <div class="product-logo-section">
+                        <div class="product-logo-container">
+                            <img src="../../assets/images/LOGO_MST GRIS.svg" alt="Maestría del Dinero" class="product-logo">
+                        </div>
+                    </div>
+
+                    <div class="product-img-section">
+                        <p class="product-description">
+                            No tienes acceso a este módulo en este momento.
+                        </p>
+                        <p class="product-description" style="margin-top: 20px; font-size: 14px;">
+                            Si crees que es un error, contáctanos por WhatsApp para resolver tu acceso.
+                        </p>
+                    </div>
+
+                    <div class="product-buttons">
+                        <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="btn-whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                        </a>
+                        <button onclick="backToLobby()" class="btn-secondary">Volver al Lobby</button>
+                    </div>
+                </header>
+            </div>
+        </section>
+    </div>
+
+    <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span class="tooltip">¿Necesitas soporte?</span>
+    </a>
+
+    <script src="maestria.js"></script>
+</body>
+</html>

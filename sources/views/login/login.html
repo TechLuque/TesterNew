@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luque Academy - Login</title>
+    <link rel="stylesheet" href="../../style/buttons.css">
+    <link rel="stylesheet" href="../../style/navbar.css">
+    <link rel="stylesheet" href="../../style/Style.css">
+    <link rel="stylesheet" href="../../style/whatsapp.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <main class="split-screen">
+        
+        <section class="left-pane">
+            <div class="overlay">
+                <h1>LOBBY <br><span class="text-gold">MASTER</span></h1>
+                <p>Accede a tu panel personalizado y comienza tu transformación hoy.</p>
+            </div>
+        </section>
+
+        <section class="right-pane">
+            <div class="login-box">
+                <h2>BIENVENIDO DE NUEVO</h2>
+                <p class="subtitle">Ingresa tu email para acceder a tu cuenta.</p>
+                
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            required 
+                            placeholder=" " 
+                            autocomplete="off"
+                        >
+                        <label for="email">Correo Electrónico</label>
+                    </div>
+
+                    <div id="errorMessage" class="error-message" style="display: none; color: #e74c3c; margin-top: 10px; font-size: 14px;"></div>
+
+                    <button type="submit" class="btn-primary btn-lg">
+                        INGRESAR
+                        <span class="arrow">→</span>
+                    </button>
+                </form>
+
+                <div class="footer-links">
+                    <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n">¿Olvidaste tu acceso?</a>
+                </div>
+            </div>
+        </section>
+            
+    </main>
+
+    <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span class="tooltip">¿Necesitas soporte?</span>
+    </a>
+    
+    <script src="../../components/navbarLog.js"></script>
+    <script src="../../components/configuracion/conf.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

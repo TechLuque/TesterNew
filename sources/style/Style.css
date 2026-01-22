@@ -1,0 +1,124 @@
+/* 1. Importación de Google Fonts (Indispensable para que funcione Montserrat) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+/* Configuración General */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* CORRECCIÓN: Montserrat se aplica aquí para todo el proyecto */
+    font-family: 'Montserrat'; 
+}
+.fab, .fas, .far, .fa-brands, .fa-solid {
+    font-family: 'Montserrat'; 
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    line-height: 1.6;
+    overflow: hidden;
+}
+
+/* --- NAVEGACIÓN (Navbar) --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #000;
+}
+
+.logo {
+    /* Estilo Klipsan: Grueso y compacto */
+    font-weight: 900; 
+    font-size: 1.8rem;
+    letter-spacing: -1px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #D4AF37; /* Dorado Luque Academy */
+}
+
+/* --- HERO SECTION  --- */
+.hero {
+    padding: 60px 50px;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+.hero-left h1 {
+    /* Estilo de impacto: Letras grandes y juntas */
+    font-size: 5rem;
+    line-height: 0.85; 
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+}
+
+.hero-right p {
+    font-size: 1.15rem;
+    color: #ccc;
+    margin-bottom: 30px;
+    font-weight: 400; /* Peso normal para lectura */
+}
+
+/* --- BOTONES --- */
+.btn-main {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 18px 30px;
+    font-family: 'Montserrat'; 
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+.btn-main:hover {
+    background-color: #D4AF37; 
+    color: #fff;
+}
+
+.btn-outline {
+    background: transparent;
+    color: white;
+    border: 1.5px solid white;
+    padding: 10px 25px;
+    border-radius: 50px; 
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn-outline:hover {
+    background: white;
+    color: black;
+}
+
+

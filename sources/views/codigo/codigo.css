@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+:root {
+    --primary-green: #69E4FF;
+    --dark-green: #69E4FF;
+    --white: #ffffff;
+    --bg-overlay: rgba(0, 0, 0, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+}
+
+/* --- HERO SECTION --- */
+.hero-product {
+    width: 100%;
+    height: 100vh;
+    background: url('../../assets/images/CDD_Home_02.jpg') no-repeat center center/cover;
+    position: relative;
+}
+
+.hero-overlay {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.4));
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER & LOGO --- */
+.product-header {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 80px;
+    max-width: 900px;
+}
+
+.product-logo-section {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.product-logo-container {
+    width: 25%;
+}
+
+.product-logo {
+    width: 100%;
+    height: auto;
+}
+
+.main-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: none;
+}
+
+.product-description {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 40px;
+    max-width: 650px;
+}
+
+/* --- BOTONES ESTILO IMAGEN --- */
+.product-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.product-buttons .btn-primary,
+.product-buttons .btn-secondary,
+.product-buttons .btn-whatsapp {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Font Awesome Icons en botones */
+.btn-whatsapp i {
+    font-family: 'Font Awesome 6 Brands' !important;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .product-header { padding: 0 20px; text-align: center; }
+    .product-logo-container { width: 50%; margin: 0 auto; }
+    .main-title { font-size: 2.5rem; }
+    .product-buttons { flex-direction: column; }
+}

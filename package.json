@@ -1,0 +1,10 @@
+{
+  "name": "zoom-admin-panel",
+  "version": "1.0.0",
+  "description": "Panel de validación de acceso a salas Zoom",
+  "private": true,
+  "engines": {
+    "node": "24.x"
+  },
+  "license": "MIT"
+}

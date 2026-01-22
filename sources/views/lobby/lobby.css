@@ -1,0 +1,700 @@
+:root {
+    --bg-black: #0a0a0a;
+    --bg-dark-gray: #121212;
+    --gold: #ffffff;
+    --gold-hover: rgb(39, 39, 39);
+    --white: #ffffff;
+    --text-gray: #a0a0a0;
+    --font-main: 'Montserrat';
+    --success-green: #27ae60;
+    --error-red: #e74c3c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+
+body {
+    background-color: var(--bg-black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: "Inter Tight", "Anton", sans-serif !important;
+}
+
+body.lobby-page {
+    height: auto !important;
+    overflow-y: auto !important;
+}
+
+.lobby-container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    color: var(--white);
+    text-align: center;
+    padding: 20px;
+}
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../assets/images/CDD_Home_02.jpg') no-repeat center center/cover;
+    z-index: -1;
+}
+
+.background-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.lobby-content {
+    z-index: 1;
+    max-width: 900px;
+    width: 100%;
+    animation: fadeInUp 1.2s ease-out;
+}
+
+.lobby-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.lobby-header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    font-weight: 900;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.subtitle {
+    color: var(--text-gray);
+    font-size: 1.1rem;
+    padding: 0 20px;
+}
+
+.lobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.lobby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 40px 0;
+}
+
+.lobby-card {
+    background-color: var(--bg-dark-gray);
+    border-radius: 8px;
+    padding: 40px 30px;
+    text-align: center;
+    border: 2px solid #333;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.lobby-card.enabled {
+    border-color: var(--gold);
+    cursor: pointer;
+}
+
+.lobby-card.enabled:hover {
+    background-color: #1a1a1a;
+    border-color: var(--gold);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+.lobby-card.disabled {
+    opacity: 0.5;
+    border-color: var(--error-red);
+}
+
+.lobby-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: var(--gold);
+}
+
+.lobby-card.disabled .lobby-icon {
+    color: var(--error-red);
+}
+
+.lobby-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.lobby-desc {
+    color: var(--text-gray);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+.floating-text {
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.gold-text {
+    color: var(--gold);
+}
+
+.lobby-subtitle {
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 40px;
+    font-weight: 400;
+    padding: 0 20px;
+}
+
+.lobby-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+.btn-lobby {
+    padding: 18px 35px;
+    font-weight: 900;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+}
+
+.btn-lobby.gold {
+    background-color: var(--gold);
+    color: #000;
+    border: none;
+}
+
+.btn-lobby.gold:hover {
+    background-color: rgb(39, 39, 39);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.btn-lobby.outline {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+}
+
+.btn-lobby.outline:hover {
+    background: var(--white);
+    color: #000;
+    transform: translateY(-5px);
+}
+
+.no-access-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 20px;
+}
+
+.no-access-card {
+    background-color: var(--bg-dark-gray);
+    border: 2px solid var(--error-red);
+    border-radius: 8px;
+    padding: 60px 40px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.no-access-card i {
+    font-size: 4rem;
+    color: var(--error-red);
+    margin-bottom: 20px;
+    display: block;
+}
+
+.no-access-card h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.no-access-card p {
+    color: var(--text-gray);
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+/* ===== ACCESS BUTTONS STYLING ===== */
+/**
+ * .access-btn: Botones para acceder a las 3 salas
+ * Botones simples y directos, sin conflictos de estilos
+ */
+.access-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.access-btn img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.access-btn:hover img {
+    filter: brightness(1.15);
+    transform: scale(1.05);
+}
+
+.access-btn:active img {
+    transform: scale(0.98);
+}
+
+.access-btn-1 img {
+    position: relative;
+    left: -90px;
+}
+
+.access-btn-2 img {
+    position: relative;
+    left: -60px;
+}
+
+.access-btn-3 img {
+    position: relative;
+    left: 400px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    border: 1px solid #333;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: none;
+    border: none;
+    color: #a0a0a0;
+    font-size: 28px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--white);
+}
+
+.modal-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--white);
+    letter-spacing: 1px;
+}
+
+.modal-content p {
+    font-size: 1rem;
+    color: var(--text-gray);
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.modal-info {
+    font-size: 0.95rem;
+    color: #e74c3c;
+    font-style: italic;
+    margin-top: 20px !important;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.modal-buttons button,
+.modal-buttons a {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.modal-buttons .btn-secondary {
+    background-color: transparent;
+    border: 1px solid #555;
+    color: var(--white);
+}
+
+.modal-buttons .btn-secondary:hover {
+    background-color: #333;
+    border-color: #777;
+}
+
+.modal-buttons .btn-whatsapp {
+    background-color: #25D366;
+    color: white;
+}
+
+.modal-buttons .btn-whatsapp:hover {
+    background-color: #20BA5A;
+    transform: translateY(-2px);
+}
+
+.modal-buttons .btn-whatsapp i,
+.btn-whatsapp i {
+    font-family: 'Font Awesome 6 Brands' !important;
+}
+
+.inner-box-div {
+    align-items: center;
+    gap: 20px; /* Espacio entre botones */
+}
+
+
+/* ============================================
+   RESPONSIVE - Tablets
+   ============================================ */
+@media (max-width: 1024px) {
+    .floating-text {
+        font-size: 3.5rem;
+    }
+
+    .lobby-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .lobby-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .btn-lobby {
+        padding: 16px 30px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - Tablets Medianos
+   ============================================ */
+@media (max-width: 768px) {
+    .lobby-container {
+        min-height: auto;
+        padding: 15px;
+    }
+
+    .lobby-content {
+        padding: 0;
+    }
+
+    .floating-text {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+    }
+
+    .lobby-header h1 {
+        font-size: 2rem;
+        padding: 0 15px;
+    }
+
+    .lobby-subtitle {
+        font-size: 0.95rem;
+        padding: 0 15px;
+        margin-bottom: 30px;
+    }
+
+    .lobbies-grid,
+    .lobby-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+        padding: 20px 0;
+    }
+
+    .lobby-card {
+        padding: 25px 15px;
+        margin-bottom: 15px;
+    }
+
+    .lobby-icon {
+        font-size: 2.5rem;
+    }
+
+    .lobby-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .lobby-desc {
+        font-size: 0.9rem;
+    }
+
+    .lobby-actions {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 15px;
+        gap: 12px;
+    }
+
+    .btn-lobby {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 0.8rem;
+    }
+
+    .no-access-card {
+        padding: 40px 20px;
+    }
+
+    .modal-content {
+        padding: 30px 20px;
+        max-width: 90%;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-content p {
+        font-size: 0.95rem;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+    .modal-buttons button,
+    .modal-buttons a {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .sidebar {
+        display: none;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - Mobile
+   ============================================ */
+@media (max-width: 480px) {
+    .lobby-container {
+        padding: 10px;
+    }
+
+    .floating-text {
+        font-size: 1.8rem;
+        line-height: 1;
+        letter-spacing: -0.5px;
+        margin-bottom: 15px;
+    }
+
+    .lobby-header h1 {
+        font-size: 1.5rem;
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+        padding: 0 10px;
+    }
+
+    .lobby-subtitle {
+        font-size: 0.85rem;
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+
+    .lobbies-grid,
+    .lobby-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 0 10px;
+    }
+
+    .lobby-card {
+        padding: 20px 12px;
+    }
+
+    .lobby-icon {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .lobby-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .lobby-desc {
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+    }
+
+    .lobby-actions {
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    .btn-lobby {
+        padding: 12px 15px;
+        font-size: 0.7rem;
+        min-height: 44px;
+    }
+
+    .no-access-container {
+        min-height: 50vh;
+        padding: 15px;
+    }
+
+    .no-access-card {
+        padding: 30px 15px;
+    }
+
+    .no-access-card i {
+        font-size: 3rem;
+    }
+
+    .no-access-card h2 {
+        font-size: 1.4rem;
+    }
+
+    .no-access-card p {
+        font-size: 0.9rem;
+    }
+
+    .modal-content {
+        padding: 20px 15px;
+    }
+
+    .modal-close {
+        right: 15px;
+        top: 15px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .modal-content p {
+        font-size: 0.9rem;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+    .modal-buttons button,
+    .modal-buttons a {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 0.75rem;
+        min-height: 44px;
+    }
+}
