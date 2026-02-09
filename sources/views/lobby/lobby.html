@@ -2,37 +2,103 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luque Academy</title>
-    <link rel="stylesheet" href="../../style/buttons.css">
-    <link rel="stylesheet" href="../../style/Style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Lobby de salas - Luque Academy">
+    <meta name="theme-color" content="#000000">
+    <title>Lobby - Luque Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../style/navbar.css">
     <link rel="stylesheet" href="../../style/whatsapp.css">
-    <link rel="stylesheet" href="lobby.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Lobby.css">
 </head>
 <body>
-    
-    <main class="lobby-container">
-        <div class="background-image"></div>
-        
-        <div class="lobby-content">
-            <h1 class="floating-text">TU TRANSFORMACIÓN <br> <span class="gold-text">COMIENZA AQUÍ</span></h1>
-            
-            <p class="lobby-subtitle">La reunión está por comenzar. Selecciona tu método de acceso.</p>
+    <script src="../../components/navbar.js"></script>
 
-            <div class="lobby-actions">
-                <button onclick="accessLobby(1)" class="btn-lobby gold">CÓDIGO DEL DINERO</button>
-                
-                <button onclick="accessLobby(2)" class="btn-lobby outline">MÁQUINA DEL DINERO</button>
-                
-                <button onclick="accessLobby(3)" class="btn-lobby gold">MAESTRÍA DEL DINERO</button>
+    <!-- BACKGROUND ORBS -->
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <div class="content">
+            <h1 class="main-title">
+                <span class="title-word">Bienvenido a Luque Academy</span>
+            </h1>
+            <p class="subtitle">Selecciona una sala para comenzar</p>
+
+            <div class="rooms-grid">
+                <!-- Sala 1 -->
+                <div class="room-card" data-room="1">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="icon-box">
+                            <img src="../../assets/images/LOGO CDD C.svg" alt="">
+                        </div>
+                        <p>Aprende a programar de forma interactiva</p>
+                        <div class="card-stats">
+                            <span class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                1.2K Miembros
+                            </span>
+                        </div>
+                    </div>
+                    <button class="enter-btn" onclick="accessLobby(1)">
+                        Entrar
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Sala 2 -->
+                <div class="room-card" data-room="2">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="icon-box">
+                            <img src="../../assets/images/LOGO MDD A.svg" alt="">
+                        </div>
+                        <h2>Comunidad</h2>
+                        <p>Conecta con otros estudiantes y comparte conocimiento</p>
+                        <div class="card-stats">
+                            <span class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                1.2K Miembros
+                            </span>
+                        </div>
+                    </div>
+                    <button class="enter-btn" onclick="accessLobby(2)">
+                        Entrar
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Sala 3 -->
+                <div class="room-card" data-room="3">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="icon-box">
+                            <img src="../../assets/images/LOGO_MST GRIS.svg" alt="">
+                        </div>
+                        <h2>Soporte</h2>
+                        <p>Obtén ayuda de nuestro equipo de expertos</p>
+                        <div class="card-stats">
+                            <span class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                1.2k Miembros
+                            </span>
+                        </div>
+                    </div>
+                    <button class="enter-btn" onclick="accessLobby(3)">
+                        Entrar
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </main>
-     <!-- MODAL SIN ACCESO -->
+    </div>
+
+    <!-- MODAL SIN ACCESO -->
     <div id="noAccessModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeNoAccessModal()">&times;</button>
@@ -48,11 +114,12 @@
         </div>
     </div>
 
+    <!-- WHATSAPP FLOTANTE -->
     <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
         <span class="tooltip">¿Necesitas soporte?</span>
     </a>
-    <script src="../../components/navbar.js"></script>
-    <script src="lobby.js"></script>
+
+    <!-- SCRIPTS -->
 </body>
 </html>
