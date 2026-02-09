@@ -16,4 +16,4 @@ async function validateEmailWithBackend(email) {
   }
 }
 
-const REDIRECT_PAGE = '../lobby/Lobby.html';
+const REDIRECT_PAGE = '/sources/views/lobby/Lobby.html';
