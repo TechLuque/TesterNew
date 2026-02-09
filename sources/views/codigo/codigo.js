@@ -19,7 +19,7 @@ function initializeCodigoLobby() {
   
   // Si no hay usuario, redirigir a login
   if (!userEmail || !accessibleServersJSON) {
-    window.location.href = '/sources/views/login/login.html';
+    window.location.href = '../login/login.html';
     return;
   }
   
@@ -109,7 +109,7 @@ function recordAccessLog(lobbyName) {
  * Volver al lobby principal
  */
 function backToLobby() {
-  window.location.href = '/sources/views/lobby/Lobby.html';
+  window.location.href = '../lobby/lobby.html';
 }
 
 /**
