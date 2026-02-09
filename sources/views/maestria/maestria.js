@@ -19,7 +19,7 @@ function initializeMaestriaLobby() {
   
   // Si no hay usuario, redirigir a login
   if (!userEmail || !accessibleServersJSON) {
-    window.location.href = '../login/login.html';
+    window.location.href = '/sources/views/login/login.html';
     return;
   }
   
@@ -109,7 +109,7 @@ function recordAccessLog(lobbyName) {
  * Volver al lobby principal
  */
 function backToLobby() {
-  window.location.href = '../lobby/lobby.html';
+  window.location.href = '/sources/views/lobby/lobby.html';
 }
 
 /**
@@ -123,5 +123,5 @@ function logout() {
   localStorage.removeItem('lobby2_url');
   localStorage.removeItem('lobby3_url');
   localStorage.removeItem('whatsapp');
-  window.location.href = '../login/login.html';
+  window.location.href = '/sources/views/login/login.html';
 }

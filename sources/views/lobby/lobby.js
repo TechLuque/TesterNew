@@ -33,7 +33,7 @@ function initializeLobby() {
     // Si no hay usuario, redirigir a login
     if (!userEmail || !accessibleServersJSON) {
         console.warn('⚠️ Usuario no autenticado - Redirigiendo a login');
-        window.location.href = '../login/login.html';
+        window.location.href = '/sources/views/login/login.html';
         return;
     }
 
@@ -90,9 +90,9 @@ function accessLobby(lobbyNumber) {
 
         // URLs de destino
         const lobbyPages = {
-            1: '../codigo/codigo.html',
-            2: '../maquina/maquina.html',
-            3: '../maestria/maestria.html'
+            1: '/sources/views/codigo/codigo.html',
+            2: '/sources/views/maquina/maquina.html',
+            3: '/sources/views/maestria/maestria.html'
         };
 
         console.log(`✅ Redirigiendo a sala ${lobbyNumber}`);
