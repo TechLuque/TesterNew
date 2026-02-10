@@ -46,12 +46,12 @@ function initializeLobby() {
             return;
         }
 
-        // Mapear servidores a salas - VALIDACIÓN ESTRICTA
-        // Solo considerar acceso si tiene join_url o con_acceso = true
+        // Mapear servidores a salas - VALIDACIÓN
+        // Solo considerar acceso si tiene datos (objeto no vacío)
         accessibleLobbies = accessibleServers
             .map((server, index) => {
-                // Validar que tenga datos AND (join_url OR con_acceso)
-                if (server && typeof server === 'object' && (server.join_url || server.con_acceso === true)) {
+                // Validar que tenga datos (objeto no vacío)
+                if (server && typeof server === 'object' && Object.keys(server).length > 0) {
                     console.log(`✅ Sala ${SERVER_TO_LOBBY[index]} accesible - Server ${index}:`, server);
                     return SERVER_TO_LOBBY[index];
                 }

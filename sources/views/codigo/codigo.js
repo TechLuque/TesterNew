@@ -56,13 +56,12 @@ function initializeCodigoLobby() {
     console.log(`   serverData = `, JSON.stringify(serverData));
     console.log(`   serverData !== null:`, serverData !== null);
     console.log(`   typeof serverData:`, typeof serverData);
-    console.log(`   serverData.join_url:`, serverData?.join_url);
-    console.log(`   serverData.con_acceso:`, serverData?.con_acceso);
+    console.log(`   Propiedades:`, serverData ? Object.keys(serverData) : 'ninguna');
     
-    // VALIDACIÓN ESTRICTA: Debe tener join_url o con_acceso = true
+    // VALIDACIÓN: Debe tener datos (objeto no vacío)
     const hasAccessToCodigoCode = serverData && 
                                   typeof serverData === 'object' && 
-                                  (serverData.join_url || serverData.con_acceso === true);
+                                  Object.keys(serverData).length > 0;
     
     console.log(`\n✅ Resultado: hasAccessToCodigoCode = ${hasAccessToCodigoCode}`);
     console.log('===== FIN DEBUG =====\n');

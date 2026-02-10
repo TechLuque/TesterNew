@@ -70,8 +70,8 @@ export default async function handler(req, res) {
       // Procesar resultados: VALIDACIÓN ESTRICTA
       // Solo considerar acceso válido si tiene join_url (con_acceso field) o estado OK
       const accessibleServers = results.map((r, index) => {
-        // Validar que tenga datos Y que contenga campo de acceso (join_url)
-        if (r && typeof r === 'object' && (r.join_url || r.con_acceso === true)) {
+        // Validar que tenga datos (objeto no vacío)
+        if (r && typeof r === 'object' && Object.keys(r).length > 0) {
           console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO PERMITIDO:`, JSON.stringify(r));
           return r;
         }
