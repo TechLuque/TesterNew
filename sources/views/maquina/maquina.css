@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
 :root {
-    --primary-green: #ffd204;
-    --dark-green: #ffd204;
+    --primary-green: #69E4FF;
+    --dark-green: #69E4FF;
     --white: #ffffff;
     --bg-overlay: rgba(0, 0, 0, 0.7);
     
-    /* Variables de botones específicas para MÁQUINA */
-    --btn-primary-bg: #ffd204;
+    /* Variables de botones específicas para CÓDIGO */
+    --btn-primary-bg: #69E4FF;
     --btn-primary-color: #000000;
-    --btn-primary-hover: #ffdb3d;
+    --btn-primary-hover: #4fd4ff;
     --btn-primary-hover-color: #000000;
     
     --btn-secondary-bg: transparent;
-    --btn-secondary-color: #ffd204;
-    --btn-secondary-border: 2px solid #ffd204;
-    --btn-secondary-hover: #ffd204;
+    --btn-secondary-color: #69E4FF;
+    --btn-secondary-border: 2px solid #69E4FF;
+    --btn-secondary-hover: #69E4FF;
     --btn-secondary-hover-color: #000000;
 }
 
@@ -51,7 +51,7 @@ body.product-page::before {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
-    z-index: -1;
+    z-index: 0;
 }
 
 /* --- HERO SECTION --- */
@@ -136,7 +136,7 @@ body.product-page::before {
     align-items: center;
 }
 
-/* --- BOTONES --- */
+/* --- BOTONES ESTILO IMAGEN --- */
 .product-buttons {
     display: flex;
     gap: 20px;
@@ -150,135 +150,28 @@ body.product-page::before {
 .product-buttons .btn-secondary,
 .product-buttons .btn-whatsapp {
     flex: 1;
-    min-width: 180px;
-    padding: 15px 30px;
-    min-height: 50px;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    min-width: 150px;
 }
 
+/* Font Awesome Icons en botones */
 .btn-whatsapp i {
     font-family: 'Font Awesome 6 Brands' !important;
 }
 
-/* ============================================
-   RESPONSIVE - Tablets
-   ============================================ */
-@media (max-width: 1024px) {
-    .hero-product {
-        padding-bottom: 80px;
-    }
-
-    .product-header {
-        padding: 0 30px;
-    }
-
-    .main-title {
-        font-size: 3rem;
-    }
-
-    .product-description {
-        font-size: 1rem;
-    }
-
-    .product-buttons .btn-primary,
-    .product-buttons .btn-secondary,
-    .product-buttons .btn-whatsapp {
-        min-width: 160px;
-        padding: 12px 25px;
-    }
-}
-
-/* ============================================
-   RESPONSIVE - Tablets Medianos
-   ============================================ */
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-    .hero-product {
-        padding-bottom: 70px;
-    }
-
-    .product-header {
-        padding: 0 20px;
-    }
-
-    .product-logo-container {
-        width: 40%;
-        max-width: 120px;
-    }
-
-    .main-title {
-        font-size: 2.5rem;
-    }
-
-    .product-description {
-        font-size: 1rem;
-        margin-bottom: 30px;
-    }
-
-    .product-buttons {
-        gap: 15px;
-    }
-
+    .product-header { padding: 0 20px; text-align: center; }
+    .product-logo-container { width: 50%; margin: 0 auto; }
+    .main-title { font-size: 2.5rem; }
+    .product-description { font-size: 1rem; margin-bottom: 30px; }
+    .product-buttons { flex-direction: column; align-items: stretch; max-width: 400px; }
     .product-buttons .btn-primary,
     .product-buttons .btn-secondary,
-    .product-buttons .btn-whatsapp {
-        min-width: 140px;
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
+    .product-buttons .btn-whatsapp { min-width: 100%; }
 }
 
-/* ============================================
-   RESPONSIVE - Mobile
-   ============================================ */
 @media (max-width: 480px) {
-    .hero-product {
-        padding-bottom: 60px;
-    }
-
-    .product-header {
-        padding: 0 15px;
-        gap: 20px;
-    }
-
-    .product-logo-container {
-        width: 50%;
-        max-width: 100px;
-    }
-
-    .product-logo-section {
-        margin-bottom: 15px;
-    }
-
-    .main-title {
-        font-size: 1.8rem;
-        line-height: 1;
-        margin-bottom: 15px;
-    }
-
-    .product-description {
-        font-size: 0.9rem;
-        margin-bottom: 20px;
-        max-width: 100%;
-    }
-
-    .product-buttons {
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-    }
-
-    .product-buttons .btn-primary,
-    .product-buttons .btn-secondary,
-    .product-buttons .btn-whatsapp {
-        width: 100%;
-        min-width: auto;
-        padding: 12px 15px;
-        font-size: 0.95rem;
-        min-height: 44px;
-    }
+    .main-title { font-size: 1.8rem; }
+    .product-description { font-size: 0.95rem; }
+    .hero-product { padding-bottom: 60px; }
 }

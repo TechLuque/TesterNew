@@ -1,29 +1,29 @@
-/*
- * MAQUINA.JS - Valida acceso a lobby MAQUINA
- * Corresponde a Apps Script 2 (Servidor 1)
+/**
+ * CODIGO.JS - Valida acceso a lobby CODIGO
+ * Corresponde a Apps Script 1 (Servidor 0)
  */
 
-const LOBBY_NUMBER = 2; // Sala de máquina
-const SERVER_INDEX = 1; // Apps Script 2
+const LOBBY_NUMBER = 2; // Sala de código
+const SERVER_INDEX = 1; // Apps Script 1
 
 document.addEventListener('DOMContentLoaded', function() {
   initializeMaquinaLobby();
 });
 
-/*
- * Inicializa la validación de acceso a máquina
+/**
+ * Inicializa la validación de acceso a código
  */
 function initializeMaquinaLobby() {
   const userEmail = localStorage.getItem('userEmail');
   const accessibleServersJSON = localStorage.getItem('accessibleServers');
   
-  console.log('=== MAQUINA DEBUG ===');
+  console.log('=== Maquina DEBUG ===');
   console.log('Email:', userEmail);
   console.log('AccessibleServersJSON (raw):', accessibleServersJSON);
   
   // Si no hay usuario, redirigir a login
   if (!userEmail || !accessibleServersJSON) {
-    console.warn('No hay usuario o accesos registrados');
+    console.warn('⚠️ No hay usuario o accesos registrados');
     window.location.href = '/sources/views/login/login.html';
     return;
   }
@@ -43,36 +43,36 @@ function initializeMaquinaLobby() {
     
     // Validar que sea un array
     if (!Array.isArray(accessibleServers)) {
-      console.error('ERROR: accessibleServers no es un array válido. Type:', typeof accessibleServers);
+      console.error('❌ accessibleServers no es un array válido. Type:', typeof accessibleServers);
       showAccessDenied();
       return;
     }
     
-    // Verificar si tiene acceso a MAQUINA (validado por Apps Script 2, índice 1)
+    // Verificar si tiene acceso a CODIGO (validado por Apps Script 1, índice 0)
     const serverData = accessibleServers[SERVER_INDEX];
     
-    console.log('Validando acceso a MAQUINA:');
-    console.log('   SERVER_INDEX = ' + SERVER_INDEX);
-    console.log('   serverData = ', JSON.stringify(serverData));
+    console.log(`\n🔍 Validando acceso a MAQUINA:`);
+    console.log(`   SERVER_INDEX = ${SERVER_INDEX}`);
+    console.log(`   serverData = `, JSON.stringify(serverData));
     
     // VALIDACIÓN: Objeto con propiedades = acceso, null/vacío = sin acceso
-    const hasAccessToMaquina = serverData && 
-                               typeof serverData === 'object' && 
-                               Object.keys(serverData).length > 0;
+    const hasAccessToMaquinaCode = serverData && 
+                                  typeof serverData === 'object' && 
+                                  Object.keys(serverData).length > 0;
     
-    console.log('   Tiene propiedades:', serverData ? Object.keys(serverData).length : 0);
-    console.log('   RESULTADO FINAL:', hasAccessToMaquina);
+    console.log(`   Tiene propiedades:`, serverData ? Object.keys(serverData).length : 0);
+    console.log(`   RESULTADO FINAL:`, hasAccessToMaquinaCode);
     
-    console.log('Resultado: hasAccessToMaquina = ' + hasAccessToMaquina);
+    console.log(`\n✅ Resultado: hasAccessToMaquinaCode = ${hasAccessToMaquinaCode}`);
     console.log('===== FIN DEBUG =====\n');
     
-    if (hasAccessToMaquina) {
+    if (hasAccessToMaquinaCode) {
       showAccessGranted();
     } else {
       showAccessDenied();
     }
   } catch (error) {
-    console.error('Error validando acceso:', error);
+    console.error('❌ Error validando acceso:', error);
     console.error('   Stack:', error.stack);
     showAccessDenied();
   }
@@ -94,7 +94,7 @@ function showAccessGranted() {
   
   try {
     const accessibleServers = JSON.parse(accessibleServersJSON);
-    // El segundo servidor es el que tiene acceso a máquina
+    // El primer servidor es el que tiene acceso a código
     if (accessibleServers[SERVER_INDEX] && accessibleServers[SERVER_INDEX].join_url) {
       joinUrl = accessibleServers[SERVER_INDEX].join_url;
     }

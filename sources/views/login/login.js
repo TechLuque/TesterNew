@@ -29,16 +29,24 @@ async function handleLogin(event) {
     
     if (result.hasAccess) {
       console.log('✅✅✅ ACCESO PERMITIDO');
+      
+      // REGLA DE NEGOCIO: Si tiene acceso a Maestría, también tiene acceso a Código
+      const accessibleServers = result.accessibleServers;
+      if (Array.isArray(accessibleServers) && accessibleServers[2] && !accessibleServers[0]) {
+        console.log('Aplicando regla: Maestría -> también Código');
+        accessibleServers[0] = accessibleServers[2];
+      }
+      
       localStorage.setItem('userEmail', email);
-      localStorage.setItem('accessibleServers', JSON.stringify(result.accessibleServers));
+      localStorage.setItem('accessibleServers', JSON.stringify(accessibleServers));
       
       if (result.whatsapp) {
         localStorage.setItem('whatsapp', result.whatsapp);
       }
       
-      console.log('💾 Datos guardados en localStorage');
+      console.log('Datos guardados en localStorage');
       hideError(errorDiv);
-      console.log('📍 Redirigiendo a:', REDIRECT_PAGE);
+      console.log('Redirigiendo a:', REDIRECT_PAGE);
       window.location.href = REDIRECT_PAGE;
     } else {
       console.log('❌ ACCESO DENEGADO -', result.error);
