@@ -26,9 +26,19 @@ function initializeMaestriaLobby() {
   try {
     const accessibleServers = JSON.parse(accessibleServersJSON);
     
-    // Verificar si tiene acceso a MAESTRIA (validado por Apps Script 3)
-    const hasAccessToMaestria = accessibleServers[SERVER_INDEX] !== undefined && 
-                                 accessibleServers[SERVER_INDEX] !== null;
+    // Validar que sea un array
+    if (!Array.isArray(accessibleServers)) {
+      console.error('accessibleServers no es un array válido');
+      showAccessDenied();
+      return;
+    }
+    
+    // Verificar si tiene acceso a MAESTRIA (validado por Apps Script 3, índice 2)
+    const serverData = accessibleServers[SERVER_INDEX];
+    const hasAccessToMaestria = serverData !== undefined && serverData !== null && 
+                                typeof serverData === 'object' && serverData.join_url;
+    
+    console.log(`MAESTRIA Access Debug - ServerIndex: ${SERVER_INDEX}, Data:`, serverData);
     
     if (hasAccessToMaestria) {
       showAccessGranted();

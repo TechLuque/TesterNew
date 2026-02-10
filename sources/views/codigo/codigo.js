@@ -26,9 +26,19 @@ function initializeCodigoLobby() {
   try {
     const accessibleServers = JSON.parse(accessibleServersJSON);
     
-    // Verificar si tiene acceso a CODIGO (validado por Apps Script 1)
-    const hasAccessToCodigoCode = accessibleServers[SERVER_INDEX] !== undefined && 
-                                   accessibleServers[SERVER_INDEX] !== null;
+    // Validar que sea un array
+    if (!Array.isArray(accessibleServers)) {
+      console.error('accessibleServers no es un array válido');
+      showAccessDenied();
+      return;
+    }
+    
+    // Verificar si tiene acceso a CODIGO (validado por Apps Script 1, índice 0)
+    const serverData = accessibleServers[SERVER_INDEX];
+    const hasAccessToCodigoCode = serverData !== undefined && serverData !== null && 
+                                  typeof serverData === 'object' && serverData.join_url;
+    
+    console.log(`CODIGO Access Debug - ServerIndex: ${SERVER_INDEX}, Data:`, serverData);
     
     if (hasAccessToCodigoCode) {
       showAccessGranted();

@@ -52,16 +52,18 @@ export default async function handler(req, res) {
         appScripts.map(url => validateWithAppScript(url, email))
       );
 
+      // Mapear resultados: considera válido si la respuesta existe y tiene join_url
       const accessibleServers = results.map(r => 
-        (r && r.ok) ? {
-          ok: r.ok,
+        (r && typeof r === 'object' && r.join_url) ? {
+          ok: r.ok !== false, // Si no tiene ok, asumir true (compatible con AppScripts que no lo envían)
           join_url: r.join_url,
           whatsapp: r.whatsapp
         } : null
       );
 
       const hasAccess = accessibleServers.some(s => s !== null);
-      const whatsapp = results.find(r => r && r.whatsapp)?.whatsapp || null;
+      // Obtener WhatsApp del primer servidor que tenga la propiedad
+      const whatsapp = accessibleServers.find(s => s && s.whatsapp)?.whatsapp || null;
 
       return res.status(200).json({
         hasAccess,
@@ -91,9 +93,21 @@ async function validateWithAppScript(appScriptUrl, email) {
       body: params
     });
 
-    if (!response.ok) return null;
-    return await response.json();
+    if (!response.ok) {
+      console.error(`AppScript error: ${response.status}`);
+      return null;
+    }
+    
+    const data = await response.json();
+    
+    // Validar que la respuesta sea un objeto válido con datos esenciales
+    if (typeof data === 'object' && data !== null) {
+      return data; // Retornar todo lo que el AppScript envía
+    }
+    
+    return null;
   } catch (error) {
+    console.error(`AppScript connection error: ${error.message}`);
     return null;
   }
 }
