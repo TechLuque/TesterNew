@@ -1,17 +1,17 @@
 /**
- * CODIGO.JS - Valida acceso a lobby CODIGO
+ * MAQUINA.JS - Valida acceso a lobby MAQUINA
  * Corresponde a Apps Script 1 (Servidor 0)
  */
 
-const LOBBY_NUMBER = 2; // Sala de código
-const SERVER_INDEX = 1; // Apps Script 1
+const LOBBY_NUMBER = 2; // Sala de MAQUINA
+const SERVER_INDEX = 1; // Apps Script 2
 
 document.addEventListener('DOMContentLoaded', function() {
   initializeMaquinaLobby();
 });
 
 /**
- * Inicializa la validación de acceso a código
+ * Inicializa la validación de acceso a maquina
  */
 function initializeMaquinaLobby() {
   const userEmail = localStorage.getItem('userEmail');
@@ -48,7 +48,7 @@ function initializeMaquinaLobby() {
       return;
     }
     
-    // Verificar si tiene acceso a CODIGO (validado por Apps Script 1, índice 0)
+    // Verificar si tiene acceso a MAQUINA (validado por Apps Script 1, índice 0)
     const serverData = accessibleServers[SERVER_INDEX];
     
     console.log(`\n🔍 Validando acceso a MAQUINA:`);
