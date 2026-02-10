@@ -83,12 +83,22 @@ export default async function handler(req, res) {
           
           // Si está vacío, sin acceso
           if (!hasProperties) {
-            console.log(`[VALIDATE-EMAIL] ❌ [${index}] OBJETO VACÍO - ACCESO DENEGADO`);
+            console.log(`[VALIDATE-EMAIL] ❌ [${index}] OBJETO VACIO - ACCESO DENEGADO`);
             return null;
           }
           
-          // Si tiene propiedades, asumir que es acceso válido (datos del AppScript)
-          console.log(`[VALIDATE-EMAIL] ✅ [${index}] OBJETO CON PROPIEDADES - ACCESO PERMITIDO:`, JSON.stringify(r));
+          // NUEVA VALIDACION: Buscar indicadores de rechazo
+          const hasError = r.error || r.message || r.error_message || r.errorMessage;
+          const isNotFound = r.found === false || r.exists === false || r.usuario === false || r.registered === false;
+          const isUnauthorized = r.authorized === false || r.access === false || r.permitido === false || r.con_acceso === false;
+          
+          if (hasError || isNotFound || isUnauthorized) {
+            console.log(`[VALIDATE-EMAIL] ❌ [${index}] RECHAZO DETECTADO - ACCESO DENEGADO:`, JSON.stringify(r));
+            return null;
+          }
+          
+          // Si NO tiene indicador de rechazo, permitir acceso
+          console.log(`[VALIDATE-EMAIL] ✅ [${index}] VALIDO - ACCESO PERMITIDO:`, JSON.stringify(r));
           return r;
         }
         
