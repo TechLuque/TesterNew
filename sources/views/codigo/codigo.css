@@ -60,9 +60,9 @@ body.product-page::before {
     min-height: 100vh;
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    padding: 0;
+    padding-bottom: 100px;
 }
 
 .hero-overlay {
@@ -71,10 +71,9 @@ body.product-page::before {
     background: none;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     padding: 20px;
-    z-index: 1;
 }
 
 /* --- HEADER & LOGO --- */
@@ -87,7 +86,6 @@ body.product-page::before {
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    z-index: 1;
 }
 
 .product-logo-section {

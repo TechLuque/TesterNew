@@ -17,21 +17,10 @@ async function handleLogin(event) {
     const result = await validateEmailWithBackend(email);
     
     if (result.hasAccess) {
-      // REGLAS DE ACCESO JERÁRQUICO:
-      // Maestría [2] → acceso a Maestría + Máquina + Código
-      // Máquina [1] → acceso a Máquina + Código
-      // Código [0] → solo Código
+      // REGLA DE NEGOCIO: Si tiene acceso a Maestría, también tiene acceso a Código
       const accessibleServers = result.accessibleServers;
-      if (Array.isArray(accessibleServers)) {
-        // Si tiene Maestría, dar también Máquina y Código
-        if (accessibleServers[2]) {
-          if (!accessibleServers[1]) accessibleServers[1] = accessibleServers[2];
-          if (!accessibleServers[0]) accessibleServers[0] = accessibleServers[2];
-        }
-        // Si tiene Máquina, dar también Código
-        if (accessibleServers[1]) {
-          if (!accessibleServers[0]) accessibleServers[0] = accessibleServers[1];
-        }
+      if (Array.isArray(accessibleServers) && accessibleServers[2] && !accessibleServers[0]) {
+        accessibleServers[0] = accessibleServers[2];
       }
       
       localStorage.setItem('userEmail', email);
