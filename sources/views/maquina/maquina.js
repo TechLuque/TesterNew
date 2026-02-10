@@ -45,8 +45,10 @@ function initializeMaquinaLobby() {
     // Verificar si tiene acceso a MAQUINA (validado por Apps Script 2, índice 1)
     const serverData = accessibleServers[SERVER_INDEX];
     
-    // Más flexible: si hay datos, es que tiene acceso
-    const hasAccessToMaquina = serverData !== undefined && serverData !== null;
+    // VALIDACIÓN ESTRICTA: Debe tener join_url o con_acceso = true
+    const hasAccessToMaquina = serverData && 
+                               typeof serverData === 'object' && 
+                               (serverData.join_url || serverData.con_acceso === true);
     
     console.log('hasAccessToMaquina:', hasAccessToMaquina);
     console.log('===== FIN DEBUG =====');

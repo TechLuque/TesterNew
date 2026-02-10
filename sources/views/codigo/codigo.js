@@ -45,8 +45,10 @@ function initializeCodigoLobby() {
     // Verificar si tiene acceso a CODIGO (validado por Apps Script 1, índice 0)
     const serverData = accessibleServers[SERVER_INDEX];
     
-    // Más flexible: si hay datos, es que tiene acceso
-    const hasAccessToCodigoCode = serverData !== undefined && serverData !== null;
+    // VALIDACIÓN ESTRICTA: Debe tener join_url o con_acceso = true
+    const hasAccessToCodigoCode = serverData && 
+                                  typeof serverData === 'object' && 
+                                  (serverData.join_url || serverData.con_acceso === true);
     
     console.log('hasAccessToCodigoCode:', hasAccessToCodigoCode);
     console.log('===== FIN DEBUG =====');

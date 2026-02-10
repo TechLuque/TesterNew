@@ -63,13 +63,15 @@ export default async function handler(req, res) {
 
       console.log(`[VALIDATE-EMAIL] Resultados brutos:`, JSON.stringify(results));
 
-      // Procesar resultados: más flexible
+      // Procesar resultados: VALIDACIÓN ESTRICTA
+      // Solo considerar acceso válido si tiene join_url (con_acceso field) o estado OK
       const accessibleServers = results.map((r, index) => {
-        if (r && typeof r === 'object' && Object.keys(r).length > 0) {
-          console.log(`[VALIDATE-EMAIL] ✅ Server ${index} tiene acceso`, r);
+        // Validar que tenga datos Y que contenga campo de acceso (join_url)
+        if (r && typeof r === 'object' && (r.join_url || r.con_acceso === true)) {
+          console.log(`[VALIDATE-EMAIL] ✅ Server ${index} TIENE ACCESO`, r);
           return r;
         }
-        console.log(`[VALIDATE-EMAIL] ❌ Server ${index} sin acceso`);
+        console.log(`[VALIDATE-EMAIL] ❌ Server ${index} SIN ACCESO - Valor:`, r);
         return null;
       });
 

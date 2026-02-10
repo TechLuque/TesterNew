@@ -45,8 +45,10 @@ function initializeMaestriaLobby() {
     // Verificar si tiene acceso a MAESTRIA (validado por Apps Script 3, índice 2)
     const serverData = accessibleServers[SERVER_INDEX];
     
-    // Más flexible: si hay datos, es que tiene acceso
-    const hasAccessToMaestria = serverData !== undefined && serverData !== null;
+    // VALIDACIÓN ESTRICTA: Debe tener join_url o con_acceso = true
+    const hasAccessToMaestria = serverData && 
+                                typeof serverData === 'object' && 
+                                (serverData.join_url || serverData.con_acceso === true);
     
     console.log('hasAccessToMaestria:', hasAccessToMaestria);
     console.log('===== FIN DEBUG =====');

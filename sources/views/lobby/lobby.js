@@ -46,12 +46,21 @@ function initializeLobby() {
             return;
         }
 
-        // Mapear servidores a salas
+        // Mapear servidores a salas - VALIDACIÓN ESTRICTA
+        // Solo considerar acceso si tiene join_url o con_acceso = true
         accessibleLobbies = accessibleServers
-            .map((server, index) => server !== null ? SERVER_TO_LOBBY[index] : null)
+            .map((server, index) => {
+                // Validar que tenga datos AND (join_url OR con_acceso)
+                if (server && typeof server === 'object' && (server.join_url || server.con_acceso === true)) {
+                    console.log(`✅ Sala ${SERVER_TO_LOBBY[index]} accesible - Server ${index}:`, server);
+                    return SERVER_TO_LOBBY[index];
+                }
+                console.log(`❌ Sala ${SERVER_TO_LOBBY[index]} NO accesible - Server ${index}:`, server);
+                return null;
+            })
             .filter(x => x !== null);
 
-        console.log('✅ Salas accesibles:', accessibleLobbies);
+        console.log('✅ Salas accesibles definitivas:', accessibleLobbies);
 
         // Obtener WhatsApp desde localStorage si existe
         const savedWhatsapp = localStorage.getItem('whatsapp');
