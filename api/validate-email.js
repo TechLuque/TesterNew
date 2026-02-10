@@ -67,11 +67,11 @@ export default async function handler(req, res) {
       console.log(`\n[VALIDATE-EMAIL] ======= RESUMEN FINAL =======`);
       console.log(`[VALIDATE-EMAIL] Resultados brutos:`, JSON.stringify(results));
 
-      // Procesar resultados: NUEVA LÓGICA MÁS ESTRICTA
-      // Permitir acceso SOLO si:
+      // Procesar resultados: VALIDACIÓN SIMPLIFICADA Y ROBUSTA
+      // PERMITIR acceso si:
       // 1. El AppScript devuelve un objeto CON propiedades
-      // 2. Y contiene al menos UN campo positivo de acceso (join_url, url, link, etc)
-      // 3. Y NO contiene indicadores de rechazo
+      // 2. Y NO tiene indicadores de rechazo EXPLÍCITO (error, unauthorized, not found)
+      // DENEGAR si: null, objeto vacío, o tiene indicador de rechazo
       const accessibleServers = results.map((r, index) => {
         console.log(`\n[VALIDATE-EMAIL] 🔍 Analizando resultado [${index}]:`, JSON.stringify(r));
         
@@ -92,47 +92,29 @@ export default async function handler(req, res) {
             return null;
           }
           
-          // PRIMERO: Buscar indicadores de rechazo EXPLÍCITO
-          const hasError = r.error || r.message || r.error_message || r.errorMessage || r.mensaje || r.status === 'error';
-          const isNotFound = r.found === false || r.exists === false || r.usuario === false || r.registered === false;
+          // Buscar indicadores EXPLÍCITOS de rechazo
+          const hasError = r.error || r.message || r.error_message || r.errorMessage || r.mensaje;
+          const statusIsError = r.status === 'error' || r.status === 'fail' || r.status === 'failed';
+          const isNotFound = r.found === false || r.exists === false || r.usuario === false || r.registered === false || r.encontrado === false;
           const isUnauthorized = r.authorized === false || r.access === false || r.permitido === false || r.con_acceso === false;
           
-          if (hasError || isNotFound || isUnauthorized) {
+          const hasRejectIndicator = hasError || statusIsError || isNotFound || isUnauthorized;
+          
+          if (hasRejectIndicator) {
             console.log(`[VALIDATE-EMAIL] ❌ [${index}] RECHAZO EXPLÍCITO DETECTADO:`, 
-              hasError ? '(error)' : '', isNotFound ? '(no encontrado)' : '', isUnauthorized ? '(no autorizado)' : '',
+              hasError ? 'error' : '', 
+              statusIsError ? 'status=error' : '', 
+              isNotFound ? 'not_found' : '', 
+              isUnauthorized ? 'unauthorized' : '',
               JSON.stringify(r));
             return null;
           }
           
-          // SEGUNDO: Buscar indicadores POSITIVOS de acceso (campos que indican acceso válido)
-          const hasAccessIndicators = 
-            r.join_url ||                                    // Zoom link
-            r.url ||                                         // URL genérica
-            r.link ||                                        // Link genérico
-            r.access_granted ||                              // Access granted flag
-            r.permitido === true ||                          // Spanish: permitido
-            r.con_acceso === true ||                         // Spanish: con_acceso
-            r.authorized === true ||                         // Authorized flag
-            r.access === true ||                             // Access flag
-            r.ok === true ||                                 // OK flag
-            r.success === true ||                            // Success flag
-            r.status === 'ok' ||                             // Status OK
-            r.status === 'success' ||                        // Status success
-            r.status === 'granted' ||                        // Status granted
-            (r.nombre && r.sala) ||                          // Has user data + sala
-            (r.email && r.link);                             // Has email + link
-          
-          if (hasAccessIndicators) {
-            console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO CONFIRMADO - Indicadores positivos encontrados`);
-            console.log(`[VALIDATE-EMAIL] ✅ [${index}] Datos:`, JSON.stringify(r));
-            return r;
-          }
-          
-          // Si tiene propiedades pero NINGÚN indicador positivo ni negativo
-          console.log(`[VALIDATE-EMAIL] ⚠️ [${index}] OBJETO SIN INDICADORES CLAROS - ACCESO DENEGADO (POR SEGURIDAD)`);
-          console.log(`[VALIDATE-EMAIL] ⚠️ [${index}] Datos recibidos:`, JSON.stringify(r));
-          console.log(`[VALIDATE-EMAIL] ⚠️ [${index}] Claves encontradas:`, keys);
-          return null;
+          // CLAVE: Si tiene propiedades Y no hay rechazo explícito → PERMITIR ACCESO
+          console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO PERMITIDO - Objeto válido sin indicadores de rechazo`);
+          console.log(`[VALIDATE-EMAIL] ✅ [${index}] Propiedades encontradas:`, keys);
+          console.log(`[VALIDATE-EMAIL] ✅ [${index}] Datos:`, JSON.stringify(r));
+          return r;
         }
         
         // Cualquier otro tipo, sin acceso
@@ -173,38 +155,55 @@ async function validateWithAppScript(appScriptUrl, scriptName, email) {
   try {
     console.log(`\n[${scriptName}] 🔵 INICIANDO VALIDACIÓN`);
     console.log(`[${scriptName}] Email: ${email}`);
-    console.log(`[${scriptName}] URL: ${appScriptUrl?.substring(0, 100)}...`);
+    console.log(`[${scriptName}] URL: ${appScriptUrl?.substring(0, 50)}...`);
     
     const params = new URLSearchParams();
     params.append('email', email);
 
-    console.log(`[${scriptName}] 📤 Enviando POST...`);
+    console.log(`[${scriptName}] 📤 Enviando POST a AppScript...`);
     const response = await fetch(appScriptUrl, {
       method: 'POST',
       body: params,
-      timeout: 15000 // 15 segundos timeout
+      timeout: 15000
     });
 
-    console.log(`[${scriptName}] 📥 Response Status: ${response.status}`);
+    console.log(`[${scriptName}] 📥 Response Status: ${response.status} ${response.statusText}`);
     
     if (!response.ok) {
-      console.error(`[${scriptName}] ❌ HTTP Error: ${response.status}`);
+      console.error(`[${scriptName}] ❌ HTTP Error: ${response.status} ${response.statusText}`);
       return null;
     }
     
-    const data = await response.json();
-    console.log(`[${scriptName}] ✅ Success! Data:`, JSON.stringify(data));
+    let data;
+    try {
+      data = await response.json();
+    } catch (parseError) {
+      console.error(`[${scriptName}] ❌ No se pudo parsear JSON. Error:`, parseError.message);
+      const text = await response.text();
+      console.log(`[${scriptName}] Respuesta en texto:`, text?.substring(0, 200));
+      return null;
+    }
+
+    console.log(`[${scriptName}] 📦 Respuesta parseada:`, JSON.stringify(data));
+    console.log(`[${scriptName}] 📊 Tipo:`, typeof data);
     
-    // Validar que sea un objeto válido
-    if (typeof data === 'object' && data !== null) {
-      console.log(`[${scriptName}] ✅ Retornando objeto válido`);
-      return data; // Retornar todo lo que el AppScript envía
+    if (data === null) {
+      console.warn(`[${scriptName}] ⚠️ Respuesta es null`);
+      return null;
     }
     
-    console.log(`[${scriptName}] ⚠️ Respuesta no es objeto. Tipo:`, typeof data, 'Valor:', data);
+    if (typeof data === 'object') {
+      const keys = Object.keys(data);
+      console.log(`[${scriptName}] ✅ Es un objeto con ${keys.length} propiedades: [${keys.join(', ')}]`);
+      console.log(`[${scriptName}] ✅ Retornando datos:`, JSON.stringify(data));
+      return data;
+    }
+    
+    console.log(`[${scriptName}] ⚠️ Respuesta no es objeto. Tipo: ${typeof data}, Valor:`, data);
     return null;
   } catch (error) {
-    console.error(`[${scriptName}] 💥 Error:`, error.message);
+    console.error(`[${scriptName}] 💥 Excepción:`, error.message);
+    console.error(`[${scriptName}] 💥 Stack:`, error.stack);
     return null;
   }
 }
