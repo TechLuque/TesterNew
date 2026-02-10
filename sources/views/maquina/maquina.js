@@ -77,11 +77,6 @@ function initializeMaquinaLobby() {
     showAccessDenied();
   }
 }
-  } catch (error) {
-    console.error('❌ Error validando acceso:', error);
-    showAccessDenied();
-  }
-}
 
 /**
  * Muestra acceso concedido - permite entrar a la sala
