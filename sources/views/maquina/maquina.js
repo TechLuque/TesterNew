@@ -1,6 +1,6 @@
 /**
  * MAQUINA.JS - Valida acceso a lobby MAQUINA
- * Corresponde a Apps Script 1 (Servidor 0)
+ * Corresponde a Apps Script 2 (Servidor 1)
  */
 
 const LOBBY_NUMBER = 2; // Sala de MAQUINA
