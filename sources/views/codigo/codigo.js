@@ -31,9 +31,15 @@ function initializeCodigoLobby() {
   try {
     const accessibleServers = JSON.parse(accessibleServersJSON);
     console.log('AccessibleServers parsed:', accessibleServers);
-    console.log('Array length:', accessibleServers.length);
-    console.log('SERVER_INDEX:', SERVER_INDEX);
-    console.log('Server data at index', SERVER_INDEX, ':', accessibleServers[SERVER_INDEX]);
+    console.log('Array type:', Array.isArray(accessibleServers) ? 'ARRAY' : 'NOT ARRAY');
+    console.log('Array length:', accessibleServers?.length || 'undefined');
+    console.log('SERVER_INDEX constante:', SERVER_INDEX);
+    
+    console.log('Detalles de cada índice:');
+    for (let i = 0; i < 3; i++) {
+      const item = accessibleServers?.[i];
+      console.log(`  [${i}]:`, JSON.stringify(item));
+    }
     
     // Validar que sea un array
     if (!Array.isArray(accessibleServers)) {
@@ -45,13 +51,21 @@ function initializeCodigoLobby() {
     // Verificar si tiene acceso a CODIGO (validado por Apps Script 1, índice 0)
     const serverData = accessibleServers[SERVER_INDEX];
     
+    console.log(`\n🔍 Validando acceso a CODIGO:`);
+    console.log(`   SERVER_INDEX = ${SERVER_INDEX}`);
+    console.log(`   serverData = `, JSON.stringify(serverData));
+    console.log(`   serverData !== null:`, serverData !== null);
+    console.log(`   typeof serverData:`, typeof serverData);
+    console.log(`   serverData.join_url:`, serverData?.join_url);
+    console.log(`   serverData.con_acceso:`, serverData?.con_acceso);
+    
     // VALIDACIÓN ESTRICTA: Debe tener join_url o con_acceso = true
     const hasAccessToCodigoCode = serverData && 
                                   typeof serverData === 'object' && 
                                   (serverData.join_url || serverData.con_acceso === true);
     
-    console.log('hasAccessToCodigoCode:', hasAccessToCodigoCode);
-    console.log('===== FIN DEBUG =====');
+    console.log(`\n✅ Resultado: hasAccessToCodigoCode = ${hasAccessToCodigoCode}`);
+    console.log('===== FIN DEBUG =====\n');
     
     if (hasAccessToCodigoCode) {
       showAccessGranted();
@@ -60,6 +74,7 @@ function initializeCodigoLobby() {
     }
   } catch (error) {
     console.error('❌ Error validando acceso:', error);
+    console.error('   Stack:', error.stack);
     showAccessDenied();
   }
 }

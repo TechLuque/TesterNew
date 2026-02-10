@@ -55,12 +55,16 @@ export default async function handler(req, res) {
       }
 
       console.log(`[VALIDATE-EMAIL] Validando contra ${appScripts.length} AppScripts...`);
+      appScripts.forEach((s, i) => {
+        console.log(`  [${i}] ${s.name}: ${s.url?.substring(0, 80)}...`);
+      });
 
       // Validar contra cada AppScript
       const results = await Promise.all(
         appScripts.map(script => validateWithAppScript(script.url, script.name, email))
       );
 
+      console.log(`\n[VALIDATE-EMAIL] ======= RESUMEN FINAL =======`);
       console.log(`[VALIDATE-EMAIL] Resultados brutos:`, JSON.stringify(results));
 
       // Procesar resultados: VALIDACIÓN ESTRICTA
@@ -68,12 +72,15 @@ export default async function handler(req, res) {
       const accessibleServers = results.map((r, index) => {
         // Validar que tenga datos Y que contenga campo de acceso (join_url)
         if (r && typeof r === 'object' && (r.join_url || r.con_acceso === true)) {
-          console.log(`[VALIDATE-EMAIL] ✅ Server ${index} TIENE ACCESO`, r);
+          console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO PERMITIDO:`, JSON.stringify(r));
           return r;
         }
-        console.log(`[VALIDATE-EMAIL] ❌ Server ${index} SIN ACCESO - Valor:`, r);
+        console.log(`[VALIDATE-EMAIL] ❌ [${index}] ACCESO DENEGADO - Valor:`, JSON.stringify(r));
         return null;
       });
+
+      console.log(`[VALIDATE-EMAIL] Array final de accesos:`, JSON.stringify(accessibleServers));
+      console.log(`[VALIDATE-EMAIL] ===================================\n`);
 
       const hasAccess = accessibleServers.some(s => s !== null);
       const whatsapp = accessibleServers.find(s => s && (s.whatsapp || s.phone))?.whatsapp || 
@@ -103,27 +110,33 @@ export default async function handler(req, res) {
 
 async function validateWithAppScript(appScriptUrl, scriptName, email) {
   try {
-    console.log(`[${scriptName}] Validando email: ${email}`);
+    console.log(`\n[${scriptName}] 🔵 INICIANDO VALIDACIÓN`);
+    console.log(`[${scriptName}] Email: ${email}`);
+    console.log(`[${scriptName}] URL: ${appScriptUrl?.substring(0, 100)}...`);
     
     const params = new URLSearchParams();
     params.append('email', email);
 
+    console.log(`[${scriptName}] 📤 Enviando POST...`);
     const response = await fetch(appScriptUrl, {
       method: 'POST',
       body: params,
       timeout: 15000 // 15 segundos timeout
     });
 
+    console.log(`[${scriptName}] 📥 Response Status: ${response.status}`);
+    
     if (!response.ok) {
       console.error(`[${scriptName}] ❌ HTTP Error: ${response.status}`);
       return null;
     }
     
     const data = await response.json();
-    console.log(`[${scriptName}] ✅ Response:`, JSON.stringify(data));
+    console.log(`[${scriptName}] ✅ Success! Data:`, JSON.stringify(data));
     
     // Validar que sea un objeto válido
     if (typeof data === 'object' && data !== null) {
+      console.log(`[${scriptName}] ✅ Retornando objeto válido`);
       return data; // Retornar todo lo que el AppScript envía
     }
     

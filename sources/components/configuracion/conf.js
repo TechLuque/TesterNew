@@ -15,13 +15,15 @@ async function validateEmailWithBackend(email) {
     const result = await response.json();
     console.log('📥 Respuesta del backend:', JSON.stringify(result, null, 2));
     console.log('hasAccess:', result.hasAccess);
-    console.log('accessibleServers:', result.accessibleServers);
-    console.log('Detalle de cada servidor:');
-    if (result.accessibleServers) {
+    console.log('\n=== DETALLE DE SERVIDORES ===');
+    if (result.accessibleServers && Array.isArray(result.accessibleServers)) {
+      console.log('Total servidores:', result.accessibleServers.length);
+      const serverNames = ['CODIGO (idx 0)', 'MAQUINA (idx 1)', 'MAESTRIA (idx 2)'];
       result.accessibleServers.forEach((server, index) => {
-        console.log(`  [${index}]:`, server);
+        console.log(`${serverNames[index]}:`, server ? JSON.stringify(server) : '❌ null (SIN ACCESO)');
       });
     }
+    console.log('============================\n');
     
     return result;
   } catch (error) {
