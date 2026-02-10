@@ -46,14 +46,27 @@ function initializeLobby() {
             return;
         }
 
-        // Mapear servidores a salas - VALIDACIÓN
-        // Solo considerar acceso si tiene datos (objeto no vacío)
+        // Mapear servidores a salas - VALIDACIÓN ESTRICTA
+        // Solo considerar acceso si tiene campo explícito de acceso o join_url
         accessibleLobbies = accessibleServers
             .map((server, index) => {
-                // Validar que tenga datos (objeto no vacío)
-                if (server && typeof server === 'object' && Object.keys(server).length > 0) {
-                    console.log(`✅ Sala ${SERVER_TO_LOBBY[index]} accesible - Server ${index}:`, server);
-                    return SERVER_TO_LOBBY[index];
+                if (server && typeof server === 'object') {
+                    // Buscar campos de acceso explícito
+                    const hasAccessField = server.con_acceso === true || 
+                                          server.ok === true || 
+                                          server.hasAccess === true || 
+                                          server.access === true ||
+                                          server.autorizado === true ||
+                                          server.permitido === true;
+                    
+                    // Buscar join_url
+                    const hasJoinUrl = server.join_url || server.url || server.meeting_url;
+                    
+                    // Permitir si tiene acceso explícito o tiene join_url
+                    if (hasAccessField || (hasJoinUrl && Object.keys(server).length > 1)) {
+                        console.log(`✅ Sala ${SERVER_TO_LOBBY[index]} accesible - Server ${index}:`, server);
+                        return SERVER_TO_LOBBY[index];
+                    }
                 }
                 console.log(`❌ Sala ${SERVER_TO_LOBBY[index]} NO accesible - Server ${index}:`, server);
                 return null;

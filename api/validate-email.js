@@ -68,12 +68,26 @@ export default async function handler(req, res) {
       console.log(`[VALIDATE-EMAIL] Resultados brutos:`, JSON.stringify(results));
 
       // Procesar resultados: VALIDACIÓN ESTRICTA
-      // Solo considerar acceso válido si tiene join_url (con_acceso field) o estado OK
+      // Solo considerar acceso válido si explícitamente indica that tiene acceso
       const accessibleServers = results.map((r, index) => {
-        // Validar que tenga datos (objeto no vacío)
-        if (r && typeof r === 'object' && Object.keys(r).length > 0) {
-          console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO PERMITIDO:`, JSON.stringify(r));
-          return r;
+        // Validar que tenga datos Y que indique explícitamente acceso
+        // Buscar campos que indiquen acceso: con_acceso, ok, hasAccess, access, autorizado, etc.
+        if (r && typeof r === 'object') {
+          const hasAccessField = r.con_acceso === true || 
+                                r.ok === true || 
+                                r.hasAccess === true || 
+                                r.access === true ||
+                                r.autorizado === true ||
+                                r.permitido === true;
+          
+          // También validar si tiene join_url (indica que realmente retornó datos de acceso)
+          const hasJoinUrl = r.join_url || r.url || r.meeting_url;
+          
+          // Permitir si tiene campo explícito de acceso O si tiene join_url
+          if (hasAccessField || (hasJoinUrl && Object.keys(r).length > 1)) {
+            console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO PERMITIDO:`, JSON.stringify(r));
+            return r;
+          }
         }
         console.log(`[VALIDATE-EMAIL] ❌ [${index}] ACCESO DENEGADO - Valor:`, JSON.stringify(r));
         return null;
