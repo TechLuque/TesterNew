@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
 :root {
-    --primary-green: #69E4FF;
-    --dark-green: #69E4FF;
+    --primary-green: #ffd204;
+    --dark-green: #ffd204;
     --white: #ffffff;
     --bg-overlay: rgba(0, 0, 0, 0.7);
     
-    /* Variables de botones específicas para CÓDIGO */
-    --btn-primary-bg: #69E4FF;
+    /* Variables de botones específicas para MÁQUINA */
+    --btn-primary-bg: #ffd204;
     --btn-primary-color: #000000;
-    --btn-primary-hover: #4fd4ff;
+    --btn-primary-hover: #e0b100;
     --btn-primary-hover-color: #000000;
     
     --btn-secondary-bg: transparent;
-    --btn-secondary-color: #69E4FF;
-    --btn-secondary-border: 2px solid #69E4FF;
-    --btn-secondary-hover: #69E4FF;
+    --btn-secondary-color: #ffd204;
+    --btn-secondary-border: 2px solid #ffd204;
+    --btn-secondary-hover: #ffd204;
     --btn-secondary-hover-color: #000000;
 }
 
@@ -60,9 +60,9 @@ body.product-page::before {
     min-height: 100vh;
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
-    padding-bottom: 100px;
+    padding: 0;
 }
 
 .hero-overlay {
@@ -71,9 +71,10 @@ body.product-page::before {
     background: none;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     padding: 20px;
+    z-index: 1;
 }
 
 /* --- HEADER & LOGO --- */
@@ -86,6 +87,7 @@ body.product-page::before {
     flex-direction: column;
     align-items: center;
     gap: 30px;
+    z-index: 1;
 }
 
 .product-logo-section {
