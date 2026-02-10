@@ -17,28 +17,39 @@ function initializeMaquinaLobby() {
   const userEmail = localStorage.getItem('userEmail');
   const accessibleServersJSON = localStorage.getItem('accessibleServers');
   
+  console.log('=== MAQUINA DEBUG ===');
+  console.log('Email:', userEmail);
+  console.log('AccessibleServersJSON (raw):', accessibleServersJSON);
+  
   // Si no hay usuario, redirigir a login
   if (!userEmail || !accessibleServersJSON) {
+    console.warn('⚠️ No hay usuario o accesos registrados');
     window.location.href = '/sources/views/login/login.html';
     return;
   }
   
   try {
     const accessibleServers = JSON.parse(accessibleServersJSON);
+    console.log('AccessibleServers parsed:', accessibleServers);
+    console.log('Array length:', accessibleServers.length);
+    console.log('SERVER_INDEX:', SERVER_INDEX);
+    console.log('Server data at index', SERVER_INDEX, ':', accessibleServers[SERVER_INDEX]);
     
     // Validar que sea un array
     if (!Array.isArray(accessibleServers)) {
-      console.error('accessibleServers no es un array válido');
+      console.error('❌ accessibleServers no es un array válido. Type:', typeof accessibleServers);
       showAccessDenied();
       return;
     }
     
     // Verificar si tiene acceso a MAQUINA (validado por Apps Script 2, índice 1)
     const serverData = accessibleServers[SERVER_INDEX];
-    const hasAccessToMaquina = serverData !== undefined && serverData !== null && 
-                               typeof serverData === 'object' && serverData.join_url;
     
-    console.log(`MAQUINA Access Debug - ServerIndex: ${SERVER_INDEX}, Data:`, serverData);
+    // Más flexible: si hay datos, es que tiene acceso
+    const hasAccessToMaquina = serverData !== undefined && serverData !== null;
+    
+    console.log('hasAccessToMaquina:', hasAccessToMaquina);
+    console.log('===== FIN DEBUG =====');
     
     if (hasAccessToMaquina) {
       showAccessGranted();
@@ -46,7 +57,7 @@ function initializeMaquinaLobby() {
       showAccessDenied();
     }
   } catch (error) {
-    console.error('Error validando acceso:', error);
+    console.error('❌ Error validando acceso:', error);
     showAccessDenied();
   }
 }

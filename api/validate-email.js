@@ -27,6 +27,8 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       const { email } = req.body;
+      
+      console.log(`[VALIDATE-EMAIL] Email a validar: ${email}`);
 
       if (!email) {
         return res.status(400).json({ 
@@ -36,34 +38,47 @@ export default async function handler(req, res) {
       }
 
       const appScripts = [
-        process.env.APPSCRIPT_CODIGO,
-        process.env.APPSCRIPT_MAQUINA,
-        process.env.APPSCRIPT_MAESTRIA
+        { name: 'CODIGO', url: process.env.APPSCRIPT_CODIGO },
+        { name: 'MAQUINA', url: process.env.APPSCRIPT_MAQUINA },
+        { name: 'MAESTRIA', url: process.env.APPSCRIPT_MAESTRIA }
       ];
 
-      if (appScripts.some(url => !url)) {
-        return res.status(500).json({ 
-          hasAccess: false, 
-          error: 'Error de configuración en el servidor'
-        });
+      // Validar configuración
+      for (const script of appScripts) {
+        if (!script.url) {
+          console.error(`[VALIDATE-EMAIL] ❌ Falta config: ${script.name}`);
+          return res.status(500).json({ 
+            hasAccess: false, 
+            error: 'Error de configuración en el servidor'
+          });
+        }
       }
 
+      console.log(`[VALIDATE-EMAIL] Validando contra ${appScripts.length} AppScripts...`);
+
+      // Validar contra cada AppScript
       const results = await Promise.all(
-        appScripts.map(url => validateWithAppScript(url, email))
+        appScripts.map(script => validateWithAppScript(script.url, script.name, email))
       );
 
-      // Mapear resultados: considera válido si la respuesta existe y tiene join_url
-      const accessibleServers = results.map(r => 
-        (r && typeof r === 'object' && r.join_url) ? {
-          ok: r.ok !== false, // Si no tiene ok, asumir true (compatible con AppScripts que no lo envían)
-          join_url: r.join_url,
-          whatsapp: r.whatsapp
-        } : null
-      );
+      console.log(`[VALIDATE-EMAIL] Resultados brutos:`, JSON.stringify(results));
+
+      // Procesar resultados: más flexible
+      const accessibleServers = results.map((r, index) => {
+        if (r && typeof r === 'object' && Object.keys(r).length > 0) {
+          console.log(`[VALIDATE-EMAIL] ✅ Server ${index} tiene acceso`, r);
+          return r;
+        }
+        console.log(`[VALIDATE-EMAIL] ❌ Server ${index} sin acceso`);
+        return null;
+      });
 
       const hasAccess = accessibleServers.some(s => s !== null);
-      // Obtener WhatsApp del primer servidor que tenga la propiedad
-      const whatsapp = accessibleServers.find(s => s && s.whatsapp)?.whatsapp || null;
+      const whatsapp = accessibleServers.find(s => s && (s.whatsapp || s.phone))?.whatsapp || 
+                       accessibleServers.find(s => s && (s.whatsapp || s.phone))?.phone || null;
+
+      console.log(`[VALIDATE-EMAIL] Resultado final: hasAccess=${hasAccess}`);
+      console.log(`[VALIDATE-EMAIL] accessibleServers:`, JSON.stringify(accessibleServers));
 
       return res.status(200).json({
         hasAccess,
@@ -73,6 +88,7 @@ export default async function handler(req, res) {
       });
 
     } catch (error) {
+      console.error(`[VALIDATE-EMAIL] 💥 Error:`, error);
       return res.status(500).json({ 
         hasAccess: false, 
         error: 'Error en el servidor'
@@ -83,31 +99,36 @@ export default async function handler(req, res) {
   return res.status(405).json({ error: 'Método no permitido' });
 }
 
-async function validateWithAppScript(appScriptUrl, email) {
+async function validateWithAppScript(appScriptUrl, scriptName, email) {
   try {
+    console.log(`[${scriptName}] Validando email: ${email}`);
+    
     const params = new URLSearchParams();
     params.append('email', email);
 
     const response = await fetch(appScriptUrl, {
       method: 'POST',
-      body: params
+      body: params,
+      timeout: 15000 // 15 segundos timeout
     });
 
     if (!response.ok) {
-      console.error(`AppScript error: ${response.status}`);
+      console.error(`[${scriptName}] ❌ HTTP Error: ${response.status}`);
       return null;
     }
     
     const data = await response.json();
+    console.log(`[${scriptName}] ✅ Response:`, JSON.stringify(data));
     
-    // Validar que la respuesta sea un objeto válido con datos esenciales
+    // Validar que sea un objeto válido
     if (typeof data === 'object' && data !== null) {
       return data; // Retornar todo lo que el AppScript envía
     }
     
+    console.log(`[${scriptName}] ⚠️ Respuesta no es objeto. Tipo:`, typeof data, 'Valor:', data);
     return null;
   } catch (error) {
-    console.error(`AppScript connection error: ${error.message}`);
+    console.error(`[${scriptName}] 💥 Error:`, error.message);
     return null;
   }
 }

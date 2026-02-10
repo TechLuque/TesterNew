@@ -17,28 +17,39 @@ function initializeMaestriaLobby() {
   const userEmail = localStorage.getItem('userEmail');
   const accessibleServersJSON = localStorage.getItem('accessibleServers');
   
+  console.log('=== MAESTRIA DEBUG ===');
+  console.log('Email:', userEmail);
+  console.log('AccessibleServersJSON (raw):', accessibleServersJSON);
+  
   // Si no hay usuario, redirigir a login
   if (!userEmail || !accessibleServersJSON) {
+    console.warn('⚠️ No hay usuario o accesos registrados');
     window.location.href = '/sources/views/login/login.html';
     return;
   }
   
   try {
     const accessibleServers = JSON.parse(accessibleServersJSON);
+    console.log('AccessibleServers parsed:', accessibleServers);
+    console.log('Array length:', accessibleServers.length);
+    console.log('SERVER_INDEX:', SERVER_INDEX);
+    console.log('Server data at index', SERVER_INDEX, ':', accessibleServers[SERVER_INDEX]);
     
     // Validar que sea un array
     if (!Array.isArray(accessibleServers)) {
-      console.error('accessibleServers no es un array válido');
+      console.error('❌ accessibleServers no es un array válido. Type:', typeof accessibleServers);
       showAccessDenied();
       return;
     }
     
     // Verificar si tiene acceso a MAESTRIA (validado por Apps Script 3, índice 2)
     const serverData = accessibleServers[SERVER_INDEX];
-    const hasAccessToMaestria = serverData !== undefined && serverData !== null && 
-                                typeof serverData === 'object' && serverData.join_url;
     
-    console.log(`MAESTRIA Access Debug - ServerIndex: ${SERVER_INDEX}, Data:`, serverData);
+    // Más flexible: si hay datos, es que tiene acceso
+    const hasAccessToMaestria = serverData !== undefined && serverData !== null;
+    
+    console.log('hasAccessToMaestria:', hasAccessToMaestria);
+    console.log('===== FIN DEBUG =====');
     
     if (hasAccessToMaestria) {
       showAccessGranted();
@@ -46,7 +57,7 @@ function initializeMaestriaLobby() {
       showAccessDenied();
     }
   } catch (error) {
-    console.error('Error validando acceso:', error);
+    console.error('❌ Error validando acceso:', error);
     showAccessDenied();
   }
 }
