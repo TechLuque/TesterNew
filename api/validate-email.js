@@ -96,37 +96,6 @@ export default async function handler(req, res) {
       });
 
     } catch (error) {
-      console.error(`[VALIDATE-EMAIL] 💥 Error:`, error);
-      return res.status(500).json({ 
-        hasAccess: false, 
-        error: 'Error en el servidor'
-      });
-    }
-  }
-
-  return res.status(405).json({ error: 'Método no permitido' });
-}
-
-async function validateWithAppScript(appScriptUrl, scriptName, email) {
-  try {
-    console.log(`\n[${scriptName}] 🔵 INICIANDO VALIDACIÓN`);
-    console.log(`[${scriptName}] Email: ${email}`);
-    console.log(`[${scriptName}] URL: ${appScriptUrl?.substring(0, 50)}...`);
-    
-    const params = new URLSearchParams();
-    params.append('email', email);
-
-    console.log(`[${scriptName}] 📤 Enviando POST a AppScript...`);
-    const response = await fetch(appScriptUrl, {
-      method: 'POST',
-      body: params,
-      timeout: 15000
-    });
-
-    console.log(`[${scriptName}] 📥 Response Status: ${response.status} ${response.statusText}`);
-    
-    if (!response.ok) {
-      console.error(`[${scriptName}] ❌ HTTP Error: ${response.status} ${response.statusText}`);
       return res.status(500).json({ 
         hasAccess: false, 
         error: 'Error en el servidor'
@@ -169,3 +138,6 @@ async function validateWithAppScript(appScriptUrl, email) {
     
     return null;
   } catch (error) {
+    return null;
+  }
+}
