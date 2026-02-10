@@ -109,71 +109,13 @@ function accessLobby(lobbyNumber) {
         localStorage.setItem('currentLobby', lobbyNumber);
         localStorage.setItem('currentLobbyAccess', new Date().toISOString());
 
-        // Crear efecto de transición
-        createTransitionEffect(lobbyNumber);
-
-        // Redirigir después de la animación
-        setTimeout(() => {
-            window.location.href = lobbyPages[lobbyNumber];
-        }, 600);
+        // Redirigir inmediatamente
+        window.location.href = lobbyPages[lobbyNumber];
 
     } catch (error) {
         console.error('💥 Error accediendo a sala:', error);
         alert('Error al acceder a la sala');
     }
-}
-
-/**
- * Crear efecto de transición visual
- */
-function createTransitionEffect(lobbyNumber) {
-    const colors = {
-        1: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        2: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-        3: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
-    };
-
-    const card = document.querySelector(`[data-room="${lobbyNumber}"]`);
-    if (!card) return;
-
-    const rect = card.getBoundingClientRect();
-    const overlay = document.createElement('div');
-
-    overlay.style.position = 'fixed';
-    overlay.style.top = rect.top + 'px';
-    overlay.style.left = rect.left + 'px';
-    overlay.style.width = rect.width + 'px';
-    overlay.style.height = rect.height + 'px';
-    overlay.style.background = colors[lobbyNumber];
-    overlay.style.zIndex = '3000';
-    overlay.style.pointerEvents = 'none';
-    overlay.style.borderRadius = '20px';
-
-    document.body.appendChild(overlay);
-
-    // Animar expansión
-    overlay.animate([
-        {
-            top: rect.top + 'px',
-            left: rect.left + 'px',
-            width: rect.width + 'px',
-            height: rect.height + 'px',
-            opacity: 0.8,
-            borderRadius: '20px'
-        },
-        {
-            top: '0px',
-            left: '0px',
-            width: '100%',
-            height: '100%',
-            opacity: 1,
-            borderRadius: '0px'
-        }
-    ], {
-        duration: 600,
-        easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-        fill: 'forwards'
-    });
 }
 
 /**
