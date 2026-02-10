@@ -55,23 +55,12 @@ function initializeMaquinaLobby() {
     console.log(`   SERVER_INDEX = ${SERVER_INDEX}`);
     console.log(`   serverData = `, JSON.stringify(serverData));
     
-    // VALIDACIÓN ESTRICTA: Debe tener campo de acceso explícito o join_url
-    let hasAccessToMaquina = false;
-    if (serverData && typeof serverData === 'object') {
-      const hasAccessField = serverData.con_acceso === true || 
-                            serverData.ok === true || 
-                            serverData.hasAccess === true || 
-                            serverData.access === true ||
-                            serverData.autorizado === true ||
-                            serverData.permitido === true;
-      
-      const hasJoinUrl = serverData.join_url || serverData.url || serverData.meeting_url;
-      
-      hasAccessToMaquina = hasAccessField || (hasJoinUrl && Object.keys(serverData).length > 1);
-      
-      console.log(`   Campo explícito de acceso:`, hasAccessField);
-      console.log(`   Tiene join_url:`, !!hasJoinUrl);
-    }
+    // VALIDACIÓN: Objeto con propiedades = acceso, null/vacío = sin acceso
+    const hasAccessToMaquina = serverData && 
+                               typeof serverData === 'object' && 
+                               Object.keys(serverData).length > 0;
+    
+    console.log(`   Tiene propiedades:`, serverData ? Object.keys(serverData).length : 0);
     console.log(`   RESULTADO FINAL:`, hasAccessToMaquina);
     
     console.log(`\n✅ Resultado: hasAccessToMaquina = ${hasAccessToMaquina}`);

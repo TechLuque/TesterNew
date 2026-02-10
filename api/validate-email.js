@@ -67,29 +67,33 @@ export default async function handler(req, res) {
       console.log(`\n[VALIDATE-EMAIL] ======= RESUMEN FINAL =======`);
       console.log(`[VALIDATE-EMAIL] Resultados brutos:`, JSON.stringify(results));
 
-      // Procesar resultados: VALIDACIÓN ESTRICTA
-      // Solo considerar acceso válido si explícitamente indica that tiene acceso
+      // Procesar resultados: VALIDACIÓN INTELIGENTE
+      // Permitir acceso si: retorna objeto con propiedades O tiene campo expl&iacute;cito de acceso
+      // Denegar si: null O objeto vac&iacute;o
       const accessibleServers = results.map((r, index) => {
-        // Validar que tenga datos Y que indique explícitamente acceso
-        // Buscar campos que indiquen acceso: con_acceso, ok, hasAccess, access, autorizado, etc.
-        if (r && typeof r === 'object') {
-          const hasAccessField = r.con_acceso === true || 
-                                r.ok === true || 
-                                r.hasAccess === true || 
-                                r.access === true ||
-                                r.autorizado === true ||
-                                r.permitido === true;
-          
-          // También validar si tiene join_url (indica que realmente retornó datos de acceso)
-          const hasJoinUrl = r.join_url || r.url || r.meeting_url;
-          
-          // Permitir si tiene campo explícito de acceso O si tiene join_url
-          if (hasAccessField || (hasJoinUrl && Object.keys(r).length > 1)) {
-            console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO PERMITIDO:`, JSON.stringify(r));
-            return r;
-          }
+        // Si es null, definitivamente sin acceso
+        if (r === null) {
+          console.log(`[VALIDATE-EMAIL] ❌ [${index}] NULL - ACCESO DENEGADO`);
+          return null;
         }
-        console.log(`[VALIDATE-EMAIL] ❌ [${index}] ACCESO DENEGADO - Valor:`, JSON.stringify(r));
+        
+        // Si es un objeto
+        if (typeof r === 'object') {
+          const hasProperties = Object.keys(r).length > 0;
+          
+          // Si está vacío, sin acceso
+          if (!hasProperties) {
+            console.log(`[VALIDATE-EMAIL] ❌ [${index}] OBJETO VACÍO - ACCESO DENEGADO`);
+            return null;
+          }
+          
+          // Si tiene propiedades, asumir que es acceso válido (datos del AppScript)
+          console.log(`[VALIDATE-EMAIL] ✅ [${index}] OBJETO CON PROPIEDADES - ACCESO PERMITIDO:`, JSON.stringify(r));
+          return r;
+        }
+        
+        // Cualquier otro tipo, sin acceso
+        console.log(`[VALIDATE-EMAIL] ❌ [${index}] TIPO INVÁLIDO (${typeof r}) - ACCESO DENEGADO`);
         return null;
       });
 
