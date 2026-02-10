@@ -5,6 +5,18 @@
     --dark-green: #ffd204;
     --white: #ffffff;
     --bg-overlay: rgba(0, 0, 0, 0.7);
+    
+    /* Variables de botones específicas para MÁQUINA */
+    --btn-primary-bg: #ffd204;
+    --btn-primary-color: #000000;
+    --btn-primary-hover: #ffdb3d;
+    --btn-primary-hover-color: #000000;
+    
+    --btn-secondary-bg: transparent;
+    --btn-secondary-color: #ffd204;
+    --btn-secondary-border: 2px solid #ffd204;
+    --btn-secondary-hover: #ffd204;
+    --btn-secondary-hover-color: #000000;
 }
 
 * {

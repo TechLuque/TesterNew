@@ -67,10 +67,14 @@ export default async function handler(req, res) {
       console.log(`\n[VALIDATE-EMAIL] ======= RESUMEN FINAL =======`);
       console.log(`[VALIDATE-EMAIL] Resultados brutos:`, JSON.stringify(results));
 
-      // Procesar resultados: VALIDACIÓN INTELIGENTE
-      // Permitir acceso si: retorna objeto con propiedades O tiene campo expl&iacute;cito de acceso
-      // Denegar si: null O objeto vac&iacute;o
+      // Procesar resultados: NUEVA LÓGICA MÁS ESTRICTA
+      // Permitir acceso SOLO si:
+      // 1. El AppScript devuelve un objeto CON propiedades
+      // 2. Y contiene al menos UN campo positivo de acceso (join_url, url, link, etc)
+      // 3. Y NO contiene indicadores de rechazo
       const accessibleServers = results.map((r, index) => {
+        console.log(`\n[VALIDATE-EMAIL] 🔍 Analizando resultado [${index}]:`, JSON.stringify(r));
+        
         // Si es null, definitivamente sin acceso
         if (r === null) {
           console.log(`[VALIDATE-EMAIL] ❌ [${index}] NULL - ACCESO DENEGADO`);
@@ -79,27 +83,56 @@ export default async function handler(req, res) {
         
         // Si es un objeto
         if (typeof r === 'object') {
-          const hasProperties = Object.keys(r).length > 0;
+          const keys = Object.keys(r);
+          const hasProperties = keys.length > 0;
           
           // Si está vacío, sin acceso
           if (!hasProperties) {
-            console.log(`[VALIDATE-EMAIL] ❌ [${index}] OBJETO VACIO - ACCESO DENEGADO`);
+            console.log(`[VALIDATE-EMAIL] ❌ [${index}] OBJETO VACÍO - ACCESO DENEGADO`);
             return null;
           }
           
-          // NUEVA VALIDACION: Buscar indicadores de rechazo
-          const hasError = r.error || r.message || r.error_message || r.errorMessage;
+          // PRIMERO: Buscar indicadores de rechazo EXPLÍCITO
+          const hasError = r.error || r.message || r.error_message || r.errorMessage || r.mensaje || r.status === 'error';
           const isNotFound = r.found === false || r.exists === false || r.usuario === false || r.registered === false;
           const isUnauthorized = r.authorized === false || r.access === false || r.permitido === false || r.con_acceso === false;
           
           if (hasError || isNotFound || isUnauthorized) {
-            console.log(`[VALIDATE-EMAIL] ❌ [${index}] RECHAZO DETECTADO - ACCESO DENEGADO:`, JSON.stringify(r));
+            console.log(`[VALIDATE-EMAIL] ❌ [${index}] RECHAZO EXPLÍCITO DETECTADO:`, 
+              hasError ? '(error)' : '', isNotFound ? '(no encontrado)' : '', isUnauthorized ? '(no autorizado)' : '',
+              JSON.stringify(r));
             return null;
           }
           
-          // Si NO tiene indicador de rechazo, permitir acceso
-          console.log(`[VALIDATE-EMAIL] ✅ [${index}] VALIDO - ACCESO PERMITIDO:`, JSON.stringify(r));
-          return r;
+          // SEGUNDO: Buscar indicadores POSITIVOS de acceso (campos que indican acceso válido)
+          const hasAccessIndicators = 
+            r.join_url ||                                    // Zoom link
+            r.url ||                                         // URL genérica
+            r.link ||                                        // Link genérico
+            r.access_granted ||                              // Access granted flag
+            r.permitido === true ||                          // Spanish: permitido
+            r.con_acceso === true ||                         // Spanish: con_acceso
+            r.authorized === true ||                         // Authorized flag
+            r.access === true ||                             // Access flag
+            r.ok === true ||                                 // OK flag
+            r.success === true ||                            // Success flag
+            r.status === 'ok' ||                             // Status OK
+            r.status === 'success' ||                        // Status success
+            r.status === 'granted' ||                        // Status granted
+            (r.nombre && r.sala) ||                          // Has user data + sala
+            (r.email && r.link);                             // Has email + link
+          
+          if (hasAccessIndicators) {
+            console.log(`[VALIDATE-EMAIL] ✅ [${index}] ACCESO CONFIRMADO - Indicadores positivos encontrados`);
+            console.log(`[VALIDATE-EMAIL] ✅ [${index}] Datos:`, JSON.stringify(r));
+            return r;
+          }
+          
+          // Si tiene propiedades pero NINGÚN indicador positivo ni negativo
+          console.log(`[VALIDATE-EMAIL] ⚠️ [${index}] OBJETO SIN INDICADORES CLAROS - ACCESO DENEGADO (POR SEGURIDAD)`);
+          console.log(`[VALIDATE-EMAIL] ⚠️ [${index}] Datos recibidos:`, JSON.stringify(r));
+          console.log(`[VALIDATE-EMAIL] ⚠️ [${index}] Claves encontradas:`, keys);
+          return null;
         }
         
         // Cualquier otro tipo, sin acceso

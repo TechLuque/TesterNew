@@ -5,6 +5,18 @@
     --dark-green: #69E4FF;
     --white: #ffffff;
     --bg-overlay: rgba(0, 0, 0, 0.7);
+    
+    /* Variables de botones específicas para CÓDIGO */
+    --btn-primary-bg: #69E4FF;
+    --btn-primary-color: #000000;
+    --btn-primary-hover: #4fd4ff;
+    --btn-primary-hover-color: #000000;
+    
+    --btn-secondary-bg: transparent;
+    --btn-secondary-color: #69E4FF;
+    --btn-secondary-border: 2px solid #69E4FF;
+    --btn-secondary-hover: #69E4FF;
+    --btn-secondary-hover-color: #000000;
 }
 
 * {

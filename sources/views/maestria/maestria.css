@@ -5,6 +5,18 @@
     --dark-green: #eaeaea;
     --white: #ffffff;
     --bg-overlay: rgba(0, 0, 0, 0.7);
+    
+    /* Variables de botones específicas para MAESTRÍA */
+    --btn-primary-bg: #eaeaea;
+    --btn-primary-color: #000000;
+    --btn-primary-hover: #ffffff;
+    --btn-primary-hover-color: #000000;
+    
+    --btn-secondary-bg: transparent;
+    --btn-secondary-color: #eaeaea;
+    --btn-secondary-border: 2px solid #eaeaea;
+    --btn-secondary-hover: #eaeaea;
+    --btn-secondary-hover-color: #000000;
 }
 
 * {
