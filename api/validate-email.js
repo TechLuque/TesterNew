@@ -50,16 +50,9 @@ export default async function handler(req, res) {
         }
       }
 
-      // Usar Promise.allSettled para que un Apps Script lento/fallido no bloquee a los demás
-      const settled = await Promise.allSettled(
+      const results = await Promise.all(
         appScripts.map(script => validateWithAppScript(script.url, email))
       );
-
-      const results = settled.map((s, i) => {
-        if (s.status === 'fulfilled') return s.value;
-        console.log(`[Server ${i}] Promise rejected:`, s.reason?.message || s.reason);
-        return null;
-      });
 
       const accessibleServers = results.map((r, index) => {
         if (r === null) {
@@ -142,20 +135,13 @@ async function validateWithAppScript(appScriptUrl, email) {
     const params = new URLSearchParams();
     params.append('email', email);
 
-    // Timeout real de 12 segundos para evitar que un Apps Script lento bloquee todo
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000);
-
     const response = await fetch(appScriptUrl, {
       method: 'POST',
       body: params,
-      signal: controller.signal
+      timeout: 15000
     });
     
-    clearTimeout(timeoutId);
-    
     if (!response.ok) {
-      console.log(`[AppScript] HTTP ${response.status} para ${email}`);
       return null;
     }
     
@@ -163,7 +149,6 @@ async function validateWithAppScript(appScriptUrl, email) {
     try {
       data = await response.json();
     } catch (parseError) {
-      console.log(`[AppScript] Error parseando JSON para ${email}`);
       return null;
     }
     
@@ -177,7 +162,6 @@ async function validateWithAppScript(appScriptUrl, email) {
     
     return null;
   } catch (error) {
-    console.log(`[AppScript] Error/timeout para ${email}:`, error.name === 'AbortError' ? 'TIMEOUT (12s)' : error.message);
     return null;
   }
 }

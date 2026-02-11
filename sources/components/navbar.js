@@ -1,6 +1,6 @@
 function loadNavbar() {
     const navbarHTML = `
-    <nav class="navbar">
+    <nav class="navbar" style="position: fixed; z-index: 99999; width: 100%; top: 0; left: 0; pointer-events: auto;">
         <div class="logo">LUQUE ACADEMY</div>
         <ul class="nav-links">
             <li><a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n">Soporte</a></li>
