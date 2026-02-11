@@ -24,30 +24,82 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * Inicializar el lobby
  */
-function initializeLobby() {
+async function initializeLobby() {
     console.log('🎬 Inicializando Lobby...');
 
     const userEmail = localStorage.getItem('userEmail');
-    const accessibleServersJSON = localStorage.getItem('accessibleServers');
 
     // Si no hay usuario, redirigir a login
-    if (!userEmail || !accessibleServersJSON) {
+    if (!userEmail) {
         console.warn('⚠️ Usuario no autenticado - Redirigiendo a login');
+        window.location.href = '/sources/views/login/login.html';
+        return;
+    }
+
+    // Siempre re-consultar datos frescos del API para obtener links actualizados
+    try {
+        console.log('🔄 Consultando datos frescos del servidor...');
+        const result = await validateEmailWithBackend(userEmail);
+
+        if (result.hasAccess && Array.isArray(result.accessibleServers)) {
+            // Aplicar reglas de acceso jerárquico
+            const servers = result.accessibleServers;
+            if (servers[2]) {
+                if (!servers[1]) servers[1] = servers[2];
+                if (!servers[0]) servers[0] = servers[2];
+            }
+            if (servers[1]) {
+                if (!servers[0]) servers[0] = servers[1];
+            }
+
+            // Actualizar localStorage con datos frescos
+            localStorage.setItem('accessibleServers', JSON.stringify(servers));
+            if (result.whatsapp) {
+                localStorage.setItem('whatsapp', result.whatsapp);
+            }
+            console.log('✅ localStorage actualizado con datos frescos');
+
+            processAccessibleServers(servers);
+        } else {
+            console.warn('⚠️ El servidor indica sin acceso, usando datos del cache...');
+            fallbackToCache();
+        }
+    } catch (error) {
+        console.warn('⚠️ Error consultando servidor, usando cache local:', error.message);
+        fallbackToCache();
+    }
+}
+
+/**
+ * Fallback: usar datos cacheados en localStorage si el servidor no responde
+ */
+function fallbackToCache() {
+    const accessibleServersJSON = localStorage.getItem('accessibleServers');
+    if (!accessibleServersJSON) {
+        console.log('❌ Sin datos en cache - redirigiendo a login');
         window.location.href = '/sources/views/login/login.html';
         return;
     }
 
     try {
         const accessibleServers = JSON.parse(accessibleServersJSON);
-
-        // Si está vacío, mostrar mensaje de no acceso
         if (!Array.isArray(accessibleServers) || accessibleServers.length === 0) {
-            console.log('❌ Sin salas disponibles');
+            console.log('❌ Cache vacío');
             return;
         }
+        processAccessibleServers(accessibleServers);
+    } catch (error) {
+        console.error('💥 Error procesando cache:', error);
+        accessibleLobbies = [1, 2, 3];
+    }
+}
 
-        // Mapear servidores a salas - VALIDACIÓN SIMPLE
-        // Si objeto con propiedades = acceso, si null u objeto vacío = sin acceso
+/**
+ * Procesar los servidores accesibles y actualizar la UI
+ */
+function processAccessibleServers(accessibleServers) {
+    try {
+        // Mapear servidores a salas
         accessibleLobbies = accessibleServers
             .map((server, index) => {
                 if (server && typeof server === 'object' && Object.keys(server).length > 0) {
