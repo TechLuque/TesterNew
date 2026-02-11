@@ -113,23 +113,40 @@ function showAccessGranted() {
 }
 
 /**
- * Muestra acceso denegado
+ * Muestra acceso denegado en modal
  */
 function showAccessDenied() {
-  const grantedContainer = document.getElementById('access-granted');
-  const deniedContainer = document.getElementById('access-denied');
-  
-  if (grantedContainer) grantedContainer.style.display = 'none';
-  if (deniedContainer) deniedContainer.style.display = 'block';
+  const modal = document.getElementById('access-denied-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+  }
   
   // Obtener WhatsApp desde localStorage
   const whatsappNumber = localStorage.getItem('whatsapp');
-  const whatsappLink = document.querySelector('.btn-whatsapp');
+  const whatsappLink = document.getElementById('deniedWhatsappBtn');
   
   if (whatsappLink && whatsappNumber) {
     whatsappLink.href = 'https://wa.me/' + whatsappNumber.replace(/[^0-9]/g, '');
   }
 }
+
+/**
+ * Cerrar modal de acceso denegado
+ */
+function closeAccessDeniedModal() {
+  const modal = document.getElementById('access-denied-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// Cerrar modal al hacer clic fuera del contenido
+document.addEventListener('click', function(event) {
+  const modal = document.getElementById('access-denied-modal');
+  if (modal && event.target === modal) {
+    closeAccessDeniedModal();
+  }
+});
 
 /**
  * Registra el acceso a la sala

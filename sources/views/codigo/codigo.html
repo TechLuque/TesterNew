@@ -44,35 +44,20 @@
         </section>
     </div>
     
-    <!-- CONTENEDOR ACCESO DENEGADO -->
-    <div id="access-denied" style="display:none;">
-        <section class="hero-product">
-            <div class="hero-overlay">
-                <header class="product-header">
-                    <div class="product-logo-section">
-                        <div class="product-logo-container">
-                            <img src="../../assets/images/LOGO CDD C.svg" alt="Código del Dinero" class="product-logo">
-                        </div>
-                    </div>
-
-                    <div class="product-img-section">
-                        <p class="product-description">
-                            No tienes acceso a este módulo en este momento.
-                        </p>
-                        <p class="product-description" style="margin-top: 20px; font-size: 14px;">
-                            Si crees que es un error, contáctanos por WhatsApp para resolver tu acceso.
-                        </p>
-                    </div>
-
-                    <div class="product-buttons">
-                        <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="btn-whatsapp" target="_blank">
-                            <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
-                        </a>
-                        <button onclick="backToLobby()" class="btn-secondary">Volver al Lobby</button>
-                    </div>
-                </header>
+    <!-- MODAL ACCESO DENEGADO -->
+    <div id="access-denied-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAccessDeniedModal()">&times;</button>
+            <h2>Acceso Denegado</h2>
+            <p>No tienes acceso a este módulo en este momento.</p>
+            <p class="modal-info">Si crees que es un error, contáctanos por WhatsApp para resolver tu acceso.</p>
+            <div class="modal-buttons">
+                <a id="deniedWhatsappBtn" href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                </a>
+                <button onclick="backToLobby()" class="btn-secondary">Volver al Lobby</button>
             </div>
-        </section>
+        </div>
     </div>
 
     <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="whatsapp-float" target="_blank">
