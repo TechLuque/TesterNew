@@ -111,13 +111,7 @@ function showAccessGranted() {
   const zoomButton = document.getElementById('btn-zoom-maquina');
   
   if (zoomButton && joinUrl) {
-    // Obtener nombre del usuario y agregar como parámetro en la URL
-    const userName = localStorage.getItem('userName');
-    if (userName) {
-      zoomButton.href = joinUrl + '?name=' + encodeURIComponent(userName);
-    } else {
-      zoomButton.href = joinUrl;
-    }
+    zoomButton.href = joinUrl;
     zoomButton.onclick = function(e) {
       recordAccessLog('maquina');
     };
