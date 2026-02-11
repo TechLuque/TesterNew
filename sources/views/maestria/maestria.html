@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +13,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="product-page">
     <script src="../../components/navbar.js"></script>
-    
+
     <!-- VIDEO DE FONDO -->
     <video class="video-background" autoplay muted loop playsinline preload="auto">
         <source src="../../assets/videos/LOGO MST BLANCO.mp4" type="video/mp4">
     </video>
-    
+
     <!-- CONTENEDOR ACCESO CONCEDIDO -->
     <div id="access-granted" style="display:none;">
         <section class="hero-product">
@@ -34,18 +36,21 @@
                         <p class="product-description">
                         </p>
                     </div>
-<br><br>
+                    <br><br>
                     <div class="product-buttons">
-                        <a href="#" id="btn-zoom-maestria" class="btn-primary btn-lg" target="_blank">MAESTRÍA DEL DINERO</a>
-                        <a href="#" id="btn-zoom-maestria-extra1" class="btn-primary btn-lg" target="_blank">MÁQUINA DEL DINERO</a>
-                        <a href="#" id="btn-zoom-maestria-extra2" class="btn-primary btn-lg" target="_blank">CÓDIGO DEL DINERO</a>
+                        <a href="#" id="btn-zoom-maestria" class="btn-primary btn-lg" target="_blank">MAESTRÍA DEL
+                            DINERO</a>
+                        <a href="#" id="btn-zoom-maestria-extra1" class="btn-primary btn-lg" target="_blank">MÁQUINA DEL
+                            DINERO</a>
+                        <a href="#" id="btn-zoom-maestria-extra2" class="btn-primary btn-lg" target="_blank">CÓDIGO DEL
+                            DINERO</a>
                         <button onclick="backToLobby()" class="btn-secondary">Volver al Lobby</button>
                     </div>
                 </header>
             </div>
         </section>
     </div>
-    
+
     <!-- MODAL ACCESO DENEGADO -->
     <div id="modalAccessDenied" class="modal-overlay" style="display:none;">
         <div class="modal-box">
@@ -56,18 +61,21 @@
                 Si crees que es un error, contáctanos por WhatsApp para resolver tu acceso.
             </p>
             <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
-                <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="btn-whatsapp" target="_blank" style="flex: 1;">
+                <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n"
+                    class="btn-whatsapp" target="_blank" style="flex: 1;">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </a>
-                <button onclick="backToLobby()" class="btn-secondary" style="flex: 1; margin: 0;">Volver al Lobby</button>
+                <button onclick="backToLobby()" class="btn-secondary" style="flex: 1; margin: 0;">Volver al
+                    Lobby</button>
             </div>
         </div>
     </div>
-    
+
     <!-- CONTENEDOR ACCESO DENEGADO -->
     <div id="access-denied" style="display:none;"></div>
 
-    <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/573176484451?text=Necesito%20ayuda%20para%20entrar%20a%20una%20sesi%C3%B3n"
+        class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
         <span class="tooltip">¿Necesitas soporte?</span>
     </a>
@@ -75,4 +83,5 @@
     <script src="../../components/configuracion/conf.js"></script>
     <script src="maestria.js"></script>
 </body>
+
 </html>
