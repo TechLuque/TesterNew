@@ -28,23 +28,9 @@ async function handleLogin(event) {
     console.log('🔑 hasAccess:', result.hasAccess);
     
     if (result.hasAccess) {
-      // REGLAS DE ACCESO JERÁRQUICO:
-      // Maestría [2] → acceso a Maestría + Máquina + Código
-      // Máquina [1] → acceso a Máquina + Código
-      // Código [0] → solo Código
-      const accessibleServers = result.accessibleServers;
-      if (Array.isArray(accessibleServers)) {
-        if (accessibleServers[2]) {
-          if (!accessibleServers[1]) accessibleServers[1] = accessibleServers[2];
-          if (!accessibleServers[0]) accessibleServers[0] = accessibleServers[2];
-        }
-        if (accessibleServers[1]) {
-          if (!accessibleServers[0]) accessibleServers[0] = accessibleServers[1];
-        }
-      }
-      
+      // Acceso directo sin jerarcaria - cada usuario solo accede a lo que tiene asignado
       localStorage.setItem('userEmail', email);
-      localStorage.setItem('accessibleServers', JSON.stringify(accessibleServers));
+      localStorage.setItem('accessibleServers', JSON.stringify(result.accessibleServers));
       
       if (result.whatsapp) {
         localStorage.setItem('whatsapp', result.whatsapp);

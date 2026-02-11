@@ -42,15 +42,8 @@ async function initializeLobby() {
         const result = await validateEmailWithBackend(userEmail);
 
         if (result.hasAccess && Array.isArray(result.accessibleServers)) {
-            // Aplicar reglas de acceso jerárquico
+            // Sin lógica jerárquica - cada usuario accede solo a sus salas asignadas
             const servers = result.accessibleServers;
-            if (servers[2]) {
-                if (!servers[1]) servers[1] = servers[2];
-                if (!servers[0]) servers[0] = servers[2];
-            }
-            if (servers[1]) {
-                if (!servers[0]) servers[0] = servers[1];
-            }
 
             // Actualizar localStorage con datos frescos
             localStorage.setItem('accessibleServers', JSON.stringify(servers));
