@@ -178,3 +178,57 @@ body.product-page::before {
     .product-description { font-size: 0.95rem; }
     .hero-product { padding-bottom: 60px; }
 }
+
+/* --- MODAL ACCESO DENEGADO --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.modal-box {
+    background: #1a1a1a;
+    border: 2px solid var(--primary-green);
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(105, 228, 255, 0.3);
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--primary-green);
+    font-size: 28px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 10001;
+}
+
+.modal-close:hover {
+    color: #fff;
+}
+
+.modal-box h2 {
+    color: var(--primary-green);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.modal-box p {
+    color: #ccc;
+    line-height: 1.6;
+}

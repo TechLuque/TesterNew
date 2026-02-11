@@ -113,21 +113,28 @@ function showAccessGranted() {
 }
 
 /**
- * Muestra acceso denegado
+ * Muestra acceso denegado en un modal popup
  */
 function showAccessDenied() {
-  const grantedContainer = document.getElementById('access-granted');
-  const deniedContainer = document.getElementById('access-denied');
-  
-  if (grantedContainer) grantedContainer.style.display = 'none';
-  if (deniedContainer) deniedContainer.style.display = 'block';
-  
-  // Obtener WhatsApp desde localStorage
-  const whatsappNumber = localStorage.getItem('whatsapp');
-  const whatsappLink = document.querySelector('.btn-whatsapp');
-  
-  if (whatsappLink && whatsappNumber) {
-    whatsappLink.href = 'https://wa.me/' + whatsappNumber.replace(/[^0-9]/g, '');
+  const modal = document.getElementById('modalAccessDenied');
+  if (modal) {
+    modal.style.display = 'flex';
+    console.log('🚫 Modal de acceso denegado mostrado');
+    
+    // Redirigir al lobby después de 5 segundos
+    setTimeout(() => {
+      backToLobby();
+    }, 5000);
+  }
+}
+
+/**
+ * Cerrar modal de acceso denegado
+ */
+function closeAccessDeniedModal() {
+  const modal = document.getElementById('modalAccessDenied');
+  if (modal) {
+    modal.style.display = 'none';
   }
 }
 
