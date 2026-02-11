@@ -54,8 +54,9 @@ export default async function handler(req, res) {
         appScripts.map(script => validateWithAppScript(script.url, email))
       );
 
-      const accessibleServers = results.map((r) => {
+      const accessibleServers = results.map((r, index) => {
         if (r === null) {
+          console.log(`[Server ${index}] Respuesta null`);
           return null;
         }
         
@@ -64,23 +65,38 @@ export default async function handler(req, res) {
           const hasProperties = keys.length > 0;
           
           if (!hasProperties) {
+            console.log(`[Server ${index}] Objeto vacío`);
             return null;
           }
+
+          console.log(`[Server ${index}] Respuesta:`, JSON.stringify(r));
           
-          const hasError = r.error || r.message || r.error_message || r.errorMessage || r.mensaje;
-          const statusIsError = r.status === 'error' || r.status === 'fail' || r.status === 'failed';
+          // Si tiene join_url, es una respuesta válida - permitir acceso
+          if (r.join_url || r.JOIN_URL || r.url || r.link || r.zoom_url) {
+            return r;
+          }
+          
+          // Solo rechazar cuando los valores CLARAMENTE indican error
+          const hasExplicitError = (r.error && r.error !== false && r.error !== 'false' && r.error !== null) || 
+                                   (r.error_message && typeof r.error_message === 'string') || 
+                                   (r.errorMessage && typeof r.errorMessage === 'string');
+          const statusIsError = r.status === 'error' || r.status === 'fail' || r.status === 'failed' || r.status === 'not_found';
           const isNotFound = r.found === false || r.exists === false || r.usuario === false || r.registered === false || r.encontrado === false;
           const isUnauthorized = r.authorized === false || r.access === false || r.permitido === false || r.con_acceso === false;
+          const explicitNoAccess = r.ok === false || r.success === false || r.hasAccess === false;
           
-          const hasRejectIndicator = hasError || statusIsError || isNotFound || isUnauthorized;
+          const hasRejectIndicator = hasExplicitError || statusIsError || isNotFound || isUnauthorized || explicitNoAccess;
           
           if (hasRejectIndicator) {
+            console.log(`[Server ${index}] Rechazado por indicador:`, { hasExplicitError, statusIsError, isNotFound, isUnauthorized, explicitNoAccess });
             return null;
           }
           
+          // Si no tiene indicadores de rechazo, asumimos acceso válido
           return r;
         }
         
+        console.log(`[Server ${index}] Tipo no soportado:`, typeof r);
         return null;
       });
 
@@ -88,10 +104,18 @@ export default async function handler(req, res) {
       const whatsapp = accessibleServers.find(s => s && (s.whatsapp || s.phone))?.whatsapp || 
                        accessibleServers.find(s => s && (s.whatsapp || s.phone))?.phone || null;
 
+      // Log para debug - ver respuestas crudas vs procesadas
+      console.log('📧 Email:', email);
+      console.log('📥 Respuestas crudas de Apps Scripts:', JSON.stringify(results));
+      console.log('✅ accessibleServers procesados:', JSON.stringify(accessibleServers));
+      console.log('🔑 hasAccess:', hasAccess);
+
       return res.status(200).json({
         hasAccess,
         accessibleServers,
         whatsapp,
+        // Incluir respuestas crudas para debug (quitar en producción)
+        _debug_raw_responses: results,
         error: hasAccess ? null : 'Email no autorizado'
       });
 

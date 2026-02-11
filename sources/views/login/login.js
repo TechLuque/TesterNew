@@ -16,6 +16,17 @@ async function handleLogin(event) {
   try {
     const result = await validateEmailWithBackend(email);
     
+    // DEBUG: Ver respuesta completa del servidor
+    console.log('🔍 Respuesta completa del API:', JSON.stringify(result, null, 2));
+    if (result._debug_raw_responses) {
+      console.log('📥 Respuestas CRUDAS de Apps Scripts:');
+      result._debug_raw_responses.forEach((r, i) => {
+        console.log(`  [${i}]:`, JSON.stringify(r));
+      });
+    }
+    console.log('✅ accessibleServers:', JSON.stringify(result.accessibleServers, null, 2));
+    console.log('🔑 hasAccess:', result.hasAccess);
+    
     if (result.hasAccess) {
       // REGLAS DE ACCESO JERÁRQUICO:
       // Maestría [2] → acceso a Maestría + Máquina + Código

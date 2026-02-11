@@ -88,65 +88,27 @@ function showAccessGranted() {
   if (deniedContainer) deniedContainer.style.display = 'none';
   if (grantedContainer) grantedContainer.style.display = 'block';
   
+  // Obtener el join_url de la sala desde localStorage
   const accessibleServersJSON = localStorage.getItem('accessibleServers');
-  const zoomButton = document.getElementById('btn-zoom-maquina');
   let joinUrl = null;
-  let isCrossAccess = false;
   
   try {
     const accessibleServers = JSON.parse(accessibleServersJSON);
-    const serverData = accessibleServers[SERVER_INDEX];
-    
-    if (serverData && serverData.crossAccess) {
-      isCrossAccess = true;
-    } else if (serverData && serverData.join_url) {
-      joinUrl = serverData.join_url;
+    // El primer servidor es el que tiene acceso a código
+    if (accessibleServers[SERVER_INDEX] && accessibleServers[SERVER_INDEX].join_url) {
+      joinUrl = accessibleServers[SERVER_INDEX].join_url;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error('Error obteniendo join_url:', error);
+  }
   
-  if (zoomButton) {
-    if (isCrossAccess) {
-      zoomButton.href = '#';
-      zoomButton.onclick = async function(e) {
-        e.preventDefault();
-        zoomButton.textContent = 'REGISTRANDO...';
-        zoomButton.style.pointerEvents = 'none';
-        
-        try {
-          const email = localStorage.getItem('userEmail');
-          const response = await fetch('/api/register-sala', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, sala: SERVER_INDEX })
-          });
-          const data = await response.json();
-          
-          if (data.ok && data.join_url) {
-            const servers = JSON.parse(localStorage.getItem('accessibleServers'));
-            servers[SERVER_INDEX] = { join_url: data.join_url, registeredCross: true };
-            localStorage.setItem('accessibleServers', JSON.stringify(servers));
-            
-            recordAccessLog('maquina');
-            window.open(data.join_url, '_blank');
-            zoomButton.textContent = 'ENTRAR A LA SALA';
-            zoomButton.style.pointerEvents = 'auto';
-            zoomButton.href = data.join_url;
-            zoomButton.onclick = function() { recordAccessLog('maquina'); };
-          } else {
-            zoomButton.textContent = 'ERROR - REINTENTAR';
-            zoomButton.style.pointerEvents = 'auto';
-          }
-        } catch (error) {
-          zoomButton.textContent = 'ERROR - REINTENTAR';
-          zoomButton.style.pointerEvents = 'auto';
-        }
-      };
-    } else if (joinUrl) {
-      zoomButton.href = joinUrl;
-      zoomButton.onclick = function(e) {
-        recordAccessLog('maquina');
-      };
-    }
+  const zoomButton = document.getElementById('btn-zoom-maquina');
+  
+  if (zoomButton && joinUrl) {
+    zoomButton.href = joinUrl;
+    zoomButton.onclick = function(e) {
+      recordAccessLog('maquina');
+    };
   }
 }
 
