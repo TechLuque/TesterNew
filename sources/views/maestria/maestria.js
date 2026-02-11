@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
  * Inicializa la validación de acceso a maestría
  */
 function initializeMaestriaLobby() {
+  // Ocultar contenedores por defecto para evitar flash de tarjetas
+  const grantedContainer = document.getElementById('access-granted');
+  const deniedContainer = document.getElementById('access-denied');
+  if (grantedContainer) grantedContainer.style.display = 'none';
+  if (deniedContainer) deniedContainer.style.display = 'none';
+  
   const userEmail = localStorage.getItem('userEmail');
   const accessibleServersJSON = localStorage.getItem('accessibleServers');
   
@@ -105,7 +111,13 @@ function showAccessGranted() {
   const zoomButton = document.getElementById('btn-zoom-maestria');
   
   if (zoomButton && joinUrl) {
-    zoomButton.href = joinUrl;
+    // Obtener nombre del usuario y agregar como parámetro en la URL
+    const userName = localStorage.getItem('userName');
+    if (userName) {
+      zoomButton.href = joinUrl + '?name=' + encodeURIComponent(userName);
+    } else {
+      zoomButton.href = joinUrl;
+    }
     zoomButton.onclick = function(e) {
       recordAccessLog('maestria');
     };

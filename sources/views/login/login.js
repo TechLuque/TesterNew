@@ -36,6 +36,14 @@ async function handleLogin(event) {
         localStorage.setItem('whatsapp', result.whatsapp);
       }
       
+      // Guardar nombre de la persona (extraer del primer servidor con acceso)
+      if (result.accessibleServers && Array.isArray(result.accessibleServers)) {
+        const serverConAcceso = result.accessibleServers.find(s => s && s.nombre);
+        if (serverConAcceso && serverConAcceso.nombre) {
+          localStorage.setItem('userName', serverConAcceso.nombre);
+        }
+      }
+      
       hideError(errorDiv);
       window.location.href = REDIRECT_PAGE;
     } else {
