@@ -30,7 +30,7 @@
     --btn-border-radius: 4px;
     --btn-padding: 12px 30px;
     --btn-font-weight: 700;
-    --btn-font-size: 0.9rem;
+    --btn-font-size: 0.75rem;
     --btn-transition: all 0.3s ease;
 }
 
@@ -329,7 +329,7 @@
 
 .btn-lg {
     padding: 12px 28px;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
 }
 
 .btn-block {
