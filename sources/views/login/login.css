@@ -160,12 +160,14 @@ body {
     margin-bottom: 10px;
     letter-spacing: 1px;
     font-weight: 700;
+    text-align: center;
 }
 
 .subtitle {
     color: var(--text-gray);
     margin-bottom: 40px;
     font-size: 0.95rem;
+    text-align: center;
 }
 
 /* --- FORMULARIO --- */
@@ -228,6 +230,18 @@ body {
     margin-top: 20px;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+.footer-links a {
+    color: var(--white) !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--gold) !important;
+    text-decoration: underline;
 }
 
 /* ============================================
